@@ -188,15 +188,27 @@ let knightsEncounter = {
 // ------------- List of Upgrades ------------------- //
 const upgrades = {
     "Heavy Armor": {hp: 2},
-    "Long Sword": {dmg: 2, weapon: "long sword"},
-    "Greatsword": {dmg: 4, weapon: "greatsword", dualWield: true},
-    "Second Weapon": {atksPerRound: 2, dualWield: true}, 
-    "Shield": {avoidance: 50, shield: true}, 
-    "True Aim": {toHit: 90}, 
-    "Longbow": {firstStrike: true},
+    "Longsword": {weapon: "Longsword", dmg: 2},
+    "Greatsword": {weapon: "Greatsword", dmg: 4, usesTwoHands: true,  canHaveLongbow: false, canHaveShield: false},
+    "Longbow": {weapon: "Longbow", dmg: 2, usesTwoHands: true, firstStrike: true, canHaveGreatsword: false, canHaveShield: false},
+    "Second Weapon": {atksPerRound: 2, usesTwoHands: true}, 
+    "Shield": {usesTwoHands: true, avoidance: 50, canHaveGreatsword: false, canHaveLongbow: false}, 
+    "True Aim": {toHit: 90}
+    
 };
+const upgradesArray = [
+    { name: "Heavy Armor", hp: 2, canHaveGreatsword: true, canHaveHeavyArmor: false, canHaveLongbow: false, canHaveLongsword: true, canHaveSecondWeapon: false, canHaveShield: true, canHaveTrueAim: false},
+    { name: "Longsword", weapon: "Longsword", dmg: 2, canHaveGreatsword: true, canHaveHeavyArmor: true, canHaveLongbow: true, canHaveLongsword: false, canHaveSecondWeapon: true, canHaveShield: true, canHaveTrueAim: true},
+    { name: "Greatsword", weapon: "Greatsword", dmg: 4, canHaveGreatsword: false, canHaveHeavyArmor: true, canHaveLongbow: false, canHaveLongsword: false, canHaveSecondWeapon: false, canHaveShield: false, canHaveTrueAim: false},
+    { name: "Longbow", weapon: "Longbow", dmg: 2, firstStrike: true, canHaveGreatsword: false, canHaveHeavyArmor: true, canHaveLongbow: false, canHaveLongsword: false, canHaveSecondWeapon: false, canHaveShield: false, canHaveTrueAim: true },
+    { name: "Second Weapon", atksPerRound: 2, usesTwoHands: true },
+    { name: "Shield", usesTwoHands: true, avoidance: 50, canhavegreatsword: false, canhavelongbow: false },
+    { name: "True Aim", toHit: 90 },
+    { name: "Warrior" ,}
+];
 
-const usedUpgrades = {}
+
+const usedUpgrades = [];
 // -------------------------------------------------------------- //
 
 
@@ -250,38 +262,55 @@ function soldierReport(x){
 }
 
 //randomly nominates an upgrade for the user prompt (we run it in 2 spots to create 2 random options the user can pick from)
-function nominateUpgrade(squad){
-    //console.table(squad)
-    //store list of upgrades in a variable
+function nominateUpgrade(){
+    //store list of upgrades names in a variable
     const upgradeKeys = Object.keys(upgrades);
-    //console.log(upgradeKeys);
-    const shieldCheck = (unit) => unit.shield === true;
-    // -----------------PROBLEM -----------------------------------------//
-    if(squad.some(shieldCheck)){
-        console.log('Shield Found')
-    }
-
-    //upgradeKeys.splice('Shield', 1)
-
     //choose a number (n) and pick the upgrade that was in nth place
-    const randomKey = Math.floor(Math.random() * upgradeKeys.length)
-    return upgradeKeys[randomKey];
+    const randomKey = Math.floor(Math.random() * upgradeKeys.length);
+    //that number is the index of the upgrade we are going to nominate (barring restrictions)
+    const chosenUpgrade = upgradesArray[randomKey];
+    
+    // get all upgrades the sample unit has so far
+    // - we have this in the variable usedUpgrades
+    // check for all upgrades that can't be used with them
+    const compatibilityCheck = (upgrade) => {
+        console.log('compat check running')
+        let upgradeName = upgrade.name;
+        upgradeName = upgradeName.split(' ').join('');
+        const property = `canHave${upgradeName}`
+        if(chosenUpgrade[property] == false){
+            console.log('You cant have a ' + upgradeName)
+        } else {
+            console.log(chosenUpgrade.name + " is still elligible.");
+        }};
+
+        usedUpgrades.forEach(upgrade => {
+            compatibilityCheck(upgrade); 
+         });
+    return chosenUpgrade.name;
 }
 
+const findUpgradeIndexByName = (name) => {
+    return upgradesArray.findIndex(upgrade => upgrade.name === name);
+};
+
+
 //prompt the user to choose their next upgrade
-function promptUserToUpgrade(x){
-    console.log(x);
-    let choiceA = nominateUpgrade(x);
-    let choiceB = nominateUpgrade(x);
+function promptUserToUpgrade(){
+    //console.log(x);
+    let choiceA = nominateUpgrade();
+    let choiceB = nominateUpgrade();
     //this prevents us from randomly getting 2 of the same upgrade
     do{
-        choiceB = nominateUpgrade(x);
+        choiceB = nominateUpgrade();
     } while(choiceA == choiceB)
     
     let playerDecision = prompt(`Will you outfit your soldiers with ${choiceA} or ${choiceB}?`)
     console.log(`You chose ${playerDecision}!`);
-    upgradeSoldiers(playerDecision, x);
-    usedUpgrades[playerDecision] = upgrades[playerDecision];
+    upgradeSoldiers(playerDecision, defaultSquad.units);
+    //need to add playerDecision object onto the end of the usedUpgrades array
+    const upgradeIndex = findUpgradeIndexByName(playerDecision);
+    usedUpgrades.push(upgradesArray[upgradeIndex]);
     delete upgrades[playerDecision];
 }
 
