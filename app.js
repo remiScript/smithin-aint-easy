@@ -1,15 +1,36 @@
 /*
 To Dos:
-Finish Upgrade list (once functionality is all there)
 Store units in its own JSON object
 Have user select upgrades by clicking button instead of typing
-What to do after all upgrades are done (stacking upgrades?)
+Need equip function
+Need encounter selector
+Need gold counter
+Need shop
+NEED EFFECTS FUNCTIONALITY:
+    Poison(debuff) - If poisoned, starting on their next turn, units roll an avoidance check, they take 1 dmg if they fail.
+             Upon victory, the poison is cured.
+    Freeze(buff) - If attacked, your attacker must roll an avoidance check. If they fail, they become frozen, and skip their next attack.
+    Frozen(debuff) - Units with the "Frozen" status skip their next attack, then thaw.
+    Flame(buff) - If attacked, your attacker must roll an avoidance check. if they fail, they take 1 dmg.
+    Shockwave(buff) - Units with the "shockwave" status hits all enemies whenever they attack. Chance to hit is 100% but avoidance still applies.
+    Crush(debuff) - Units with the "Crush" status have a dmg penalty of their bonus HP.
+    Range(buff) - Units with the "Range" status attack first. Subtract 1 from the range value each attack.
+    Block(buff) - Units with the "Block" status gain a second avoidance check. If passed, incoming damage is lessened by their block value.
+    Trap(buff) - Units with the "Trap" status apply "Trapped" on enemies they hit.
+    Trapped(debuff) - Units with the "Trapped" status have zero avoidance.
+    Crit(buff) - Units with the "Crit" status have a 30% chance to do double damage.
+    Intimidate(buff) Units with the "Intimidate" status take their (dmg: value) less in damage.
+    Pet Tank - Units with the "Pet Tank" status have a 90% chance to avoid damage. Once 5 damage has been avoided, the pet dies and this dispels.
+    Stun(buff) - Units with the "Stun" status cause enemies to pass an avoidance check or they skip their next turn.
+    Rage(buff) - Units with "Rage" attack once more before dying.
+    Misdirect(buff) - Units with "Misdirect" have a 50% chance upon avoiding damage to redirect that damage to their attacker.
 
 DONE (beta) - Create combat, need combat results
 DONE - Get combat rounds to run again and again until one side is defeated
 DONE - Ensure upgrade choices aren't duplicates
 DONE - Once an upgrade has been chosen, delete it from upgrade pool (create pool for used ones)
 DONE - Need battle results report
+DONE! - TOTAL HP CALCULATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 
@@ -19,193 +40,116 @@ Upgrade: Add squad member
 */
 
 // ------------------- UNITS ------------------------//
-let basicSoldier = {
-    name: 'basicSoldier',
-    hp: 1,
-    weapon: "short sword",
-    dmg: 1,
-    atksPerRound: 1,
-    avoidance: 25,
-    toHit: 75,
-    firstStrike: false,
-    dualWield: false,
-    shield: false,
-    fireWeapon: false,
-    lightningWeapon: false,
-    isFrozen: false
+class Unit {
+    constructor(name, weapon, armor, accessory, hp, dmg, avoidance, toHit){
+        this.name = name, 
+        this.weapon = weapon, 
+        this.armor = armor, 
+        this.accessory = accessory, 
+        this.hp = hp, 
+        this.dmg = dmg, 
+        this.avoidance = avoidance, 
+        this.toHit = toHit,
+        this.bonusHp = 2, 
+        this.bonusDmg = 0, 
+        this.bonusAvoidance = 0, 
+        this.bonusToHit = 0
+    }
+
+    get totalHp() {
+        return this.calcTotalHp;
+    }
+
+    calcTotalHp(){
+        return this.hp + this.bonusHp;
+    }
+
+    upgradeUnit(x){
+        //x is a number, it selects which upgrade we want from the upgradesArray
+        const selectedUpgrade = upgradesArray.find(upgrade => upgrade.name === x);
+        console.log("You picked: " + selectedUpgrade.name);
+        const statToUpgrade = selectedUpgrade.effect;
+        console.log("That will upgrade a units: " + statToUpgrade);
+        this[statToUpgrade] += selectedUpgrade.amount;
+        console.log(`${this.name} upgraded!`)
+    }
+
+}
+function createSquire(){
+    return new Unit('squire', 'club', 'none', 'none', 1, 1, 25, 75);
 }
 
-let goblin = {
-    name: 'goblin',
-    hp: 1,
-    weapon: "stick",
-    dmg: 1,
-    atksPerRound: 1,
-    avoidance: 15,
-    toHit: 20,
-    firstStrike: false,
-    dualWield: false,
-    shield: false,
-    fireWeapon: false,
-    lightningWeapon: false
+function createGoblin(){
+    return new Unit('goblin', 'club', 'none', 'none', 1, 2, 25, 75);
+
 }
 
-let spider = {
-    name: 'spider',
-    hp: 1,
-    weapon: "fangs",
-    dmg: 1,
-    atksPerRound: 2,
-    avoidance: 15,
-    toHit: 20,
-    firstStrike: true,
-    dualWield: true,
-    shield: false,
-    fireWeapon: false,
-    lightningWeapon: false
+function createSpider(){
+    return new Unit('spider', 'fangs', 'none', 'none', 5, 1, 25, 75);
 }
-
-let iceGiant = {
-    name: 'Ice Giant',
-    hp: 30,
-    weapon: "Great Club",
-    dmg: 30,
-    atksPerRound: 1,
-    avoidance: 15,
-    toHit: 20,
-    firstStrike: false,
-    dualWield: false,
-    shield: false,
-    fireWeapon: false,
-    lightningWeapon: false,
-    freezingAura: true
-}
-
-let fireGiant = {
-    name: 'Fire Giant',
-    hp: 30,
-    weapon: "Great Axe",
-    dmg: 3,
-    atksPerRound: 1,
-    avoidance: 15,
-    toHit: 20,
-    firstStrike: false,
-    dualWield: false,
-    shield: false,
-    fireWeapon: false,
-    lightningWeapon: false,
-    flamingAura: true
-}
-
-let wizard = {
-    name: 'Wizard',
-    hp: 5,
-    weapon: "Staff of Ages",
-    dmg: 1,
-    atksPerRound: 1,
-    avoidance: 15,
-    toHit: 20,
-    firstStrike: false,
-    dualWield: false,
-    shield: false,
-    fireWeapon: false,
-    lightningWeapon: false,
-    aoeShockwave: true
-}
-
-let knight = {
-    name: 'Knight',
-    hp: 20,
-    weapon: "Greatsword",
-    dmg: 2,
-    atksPerRound: 1,
-    avoidance: 15,
-    toHit: 80,
-    firstStrike: false,
-    dualWield: false,
-    shield: true,
-    fireWeapon: false,
-    lightningWeapon: false,
-    freezingAura: false
-}
-
 
 // -------------------------------------------------------------- //
-
-
-// ------- List of encounters, will probably be refactored ------- //
-let encounters = [
-    //{name: 'Goblins', hp: 1, toHit: 20, damage: 1, special: "none", qty: 20},
-    //{name: 'Spiders', hp: 1, toHit: 60, damage: 1, special: "First Strike", qty: 5},
-    //{name: 'Ice Giant', hp: 30, toHit: 60, damage: 10, special: "Freezing Aura", qty: 1},
-    //{name: 'Fire Giant', hp: 30, toHit: 20, damage: 10, special: "Flaming Aura", qty: 1},
-    //{name: 'Wizard', hp: 5, toHit: 80, damage: 1, special: "AoE Shockwave", qty: 1},
-    //{name: 'Dual Knights', hp: 25, toHit: 80, damage: 2, special: "Armored", qty: 2}
-]
-// -------------------------------------------------------------- //
-
 
 // --------- Function calls that create default squads/encounters/etc ----- //
-//let defaultSquad = callTheSquad(10, basicSoldier);
 let defaultSquad = {
-    name: "Soldiers",
-    units: callTheSquad(10, basicSoldier)
+    name: "Squires",
+    units: callTheSquad(5, 'squire')
 }
 
 let goblinEncounter = {
     name: "Goblins",
-    units: callTheSquad(20, goblin)
+    units: callTheSquad(10, 'goblin')
 }
 
 let spiderEncounter = {
     name: "Spiders",
-    units: callTheSquad(5, spider)
-}
-
-let iceGiantEncounter = {
-    name: "THE ICE GIANT",
-    units: callTheSquad(1, iceGiant)
-}
-
-let fireGiantEncounter = {
-    name: "THE FIRE GIANT",
-    units: callTheSquad(1, fireGiant)
-}
-
-let wizardEncounter = {
-    name: "WIZARD",
-    units: callTheSquad(1, wizard)
-}
-
-let knightsEncounter = {
-    name: "Dual Knights",
-    units: callTheSquad(2, knight)
+    units: callTheSquad(5, 'spider')
 }
 
 // -------------------------------------------------------------- //
 
 
 // ------------- List of Upgrades ------------------- //
-const upgrades = {
-    "Heavy Armor": {hp: 2},
-    "Longsword": {weapon: "Longsword", dmg: 2},
-    "Greatsword": {weapon: "Greatsword", dmg: 4, usesTwoHands: true,  canHaveLongbow: false, canHaveShield: false},
-    "Longbow": {weapon: "Longbow", dmg: 2, usesTwoHands: true, firstStrike: true, canHaveGreatsword: false, canHaveShield: false},
-    "Second Weapon": {atksPerRound: 2, usesTwoHands: true}, 
-    "Shield": {usesTwoHands: true, avoidance: 50, canHaveGreatsword: false, canHaveLongbow: false}, 
-    "True Aim": {toHit: 90}
-    
-};
+
 const upgradesArray = [
-    { name: "Heavy Armor", hp: 2, canHaveGreatsword: true, canHaveHeavyArmor: false, canHaveLongbow: false, canHaveLongsword: true, canHaveSecondWeapon: false, canHaveShield: true, canHaveTrueAim: false},
-    { name: "Longsword", weapon: "Longsword", dmg: 2, canHaveGreatsword: true, canHaveHeavyArmor: true, canHaveLongbow: true, canHaveLongsword: false, canHaveSecondWeapon: true, canHaveShield: true, canHaveTrueAim: true},
-    { name: "Greatsword", weapon: "Greatsword", dmg: 4, canHaveGreatsword: false, canHaveHeavyArmor: true, canHaveLongbow: false, canHaveLongsword: false, canHaveSecondWeapon: false, canHaveShield: false, canHaveTrueAim: false},
-    { name: "Longbow", weapon: "Longbow", dmg: 2, firstStrike: true, canHaveGreatsword: false, canHaveHeavyArmor: true, canHaveLongbow: false, canHaveLongsword: false, canHaveSecondWeapon: false, canHaveShield: false, canHaveTrueAim: true },
-    { name: "Second Weapon", atksPerRound: 2, usesTwoHands: true },
-    { name: "Shield", usesTwoHands: true, avoidance: 50, canhavegreatsword: false, canhavelongbow: false },
-    { name: "True Aim", toHit: 90 },
-    { name: "Warrior" ,}
-];
+    { name: "Sharpen Blades", effect: "bonusDmg", amount: 1},
+    { name: "Reinforce Armor", effect: "bonusHp", amount: 1},
+    { name: "Evasion Training", effect: "bonusAvoidance", amount: 10},
+    { name: "Target Practice", effect: "bonusToHit", amount: 10}
+]
+
+// ------------- List of Equipment ------------------- //
+const equipmentArray = [
+    //tier 0 weapons are for enemies, not purchasable
+    {tier: 0, type: "weapon", name: 'Club', effect: "dmg", amount: 1, cost: 1}, 
+    {tier: 0, type: "weapon", name: 'Fangs', effect: "poison", amount: 1, cost: 1}, 
+    {tier: 0, type: "weapon", name: 'Great Frost Club', effect: "freeze", amount: 1, cost: 1}, 
+    {tier: 0, type: "weapon", name: 'Great Flame Axe', effect: "flame", amount: 1, cost: 1}, 
+    {tier: 0, type: "weapon", name: 'Staff of Ages', effect: "Shockwave", amount: 1, cost: 1}, 
+    {tier: 0, type: "weapon", name: 'Greatsword', effect: "Crush", amount: 1, cost: 1},
+
+    {tier: 1, type: "weapon", name: 'Mace', effect: "dmg", amount: 2, cost: 10}, 
+    {tier: 1, type: "weapon", name: 'Short Bow', effect: "range", amount: 1, cost: 10}, 
+    {tier: 1, type: "armor", name: 'Leather Armor',effect: "hp", amount: 5, cost: 10}, 
+    {tier: 1, type: "armor", name: 'Chain Armor', effect: "hp", amount: 10, cost: 10},
+    {tier: 1, type: "accessory", name: 'Shield', effect: "block", amount: 1, cost: 10}, 
+    {tier: 1, type: "accessory", name: 'Trap', effect: "trap", amount: 1, cost: 10}, 
+
+    {tier: 2, type: "weapon", name: 'Great Axe', effect: "crit", amount: 1, cost: 20}, 
+    {tier: 2, type: "weapon", name: 'Longbow', effect: "range", amount: 99, cost: 20}, 
+    {tier: 2, type: "weapon", name: 'Poison Dagger', effect: "poison", amount: 1, cost: 20}, 
+    {tier: 2, type: "armor", name: 'Plate Armor', effect: "hp", amount: 20, cost: 20}, 
+    {tier: 2, type: "armor", name: 'Mask', effect: "avoidance", amount: 60, cost: 20}, 
+    {tier: 2, type: "accessory", name: 'War Paint', effect: "intimidate", amount: 1, cost: 20}, 
+
+    {tier: 3, type: "armor", name: 'Wolf', effect: "petTank", amount: 1, cost: 30}, 
+    {tier: 3, type: "accessory", name: 'Greatshield', effect: "stun", amount: 1, cost: 30}, 
+    {tier: 3, type: "accessory", name: 'Rage Potion', effect: "rage", amount: 1, cost: 30}, 
+    {tier: 3, type: "accessory", name: 'Shadow Cloak',effect: "misdirect", amount: 1, cost: 30}
+]
+
+// ------------- List of Classes ------------------- //
+const classArray = [];
 
 
 const usedUpgrades = [];
@@ -217,13 +161,13 @@ let gameTitle = "Smithin' Aint Easy"
 
 let welcomeMsg = `
     Welcome to ${gameTitle}! Outfit your armies to protect the land!
-    You are a blacksmith who decides what gear to give the soldiers.
+    You are a blacksmith who decides what gear to give the units.
     Before each mission, you can arm them with a single upgrade.
-    You begin with ${defaultSquad.length} soldiers. How many can you keep alive after each mission?
+    You begin with ${defaultSquad.length} units. How many can you keep alive after each mission?
     Make your choices and find out!
     `
 
-let questOne = 'Our scouts have noticed a goblin occupation at the nearby mine! We must send our soldiers to route them out!'
+let questOne = 'Our scouts have noticed a goblin occupation at the nearby mine! We must send our units to route them out!'
 
 // -------------------------------------------------------------- //
 
@@ -234,70 +178,62 @@ let questOne = 'Our scouts have noticed a goblin occupation at the nearby mine! 
 function callTheSquad(x, y){
     //x = how many you want
     //y = what you want
-    //console.log(`You now have a legion of ${x.length} soldiers.`)
-    return Array.from({length: x}, () => (
-        {...y} 
-    ));
+    let outputArray = []
+    for(let i = 0; i < x; i++){
+        switch(y){
+            case "squire":
+                outputArray.push(createSquire());
+                break;
+            case "goblin":
+                outputArray.push(createGoblin());
+                break;
+            case "spider":
+                outputArray.push(createSpider());
+                break;
+            default:
+                console.log('Unknown type: ', y);
+                break;
+        }
+    }
+    return outputArray;
 }
 
-//function that gives a squad (could be our soldiers, could even be an enemy squad), an upgrade of our choosing
-function upgradeSoldiers(x, y) {
-    //x is a number, it selects which upgrade we want from the upgrades array
-    //y is the squad we want to upgrade
-    ////////////////////////////////const units = y.units;
-    const selectedUpgrade = upgrades[x];
-    if(selectedUpgrade){
-        y.forEach(soldier => {
-            Object.assign(soldier, selectedUpgrade);    
-        });
-        console.log(x + " added!")
-    } else {
-        console.log('Invalid upgrade');
-    }
+// function that equips the selected units with a weapon, armor, or accessory, only one of each can be equipped at a time
+function equipUnits(x, y){
+    //x is the name of the item
+    //y is the squad we're equipping
+    const selectedEquipment = equipmentArray.find(item => item.name === x);
+    const equipmentType = selectedEquipment.type;
+    const effectedStatFromEquipment = selectedEquipment.effect;
+    y.forEach(unit => {
+        //example of how to read this, it changes depending on what we feed into this function:
+        //soldier[weapon] = maceObject.name
+        //maceObject isn't a variable, i'm just referring to the actual object that is represented there
+        unit[equipmentType] = selectedEquipment.name;
+        unit[effectedStatFromEquipment] = selectedEquipment.amount;
+    });
 }
 
 //function that shows all information about the provided squad
-function soldierReport(x){
+function unitReport(x){
     console.table(x);
 }
 
 //randomly nominates an upgrade for the user prompt (we run it in 2 spots to create 2 random options the user can pick from)
 function nominateUpgrade(){
     //store list of upgrades names in a variable
-    const upgradeKeys = Object.keys(upgrades);
+    const upgradeKeys = Object.keys(upgradesArray);
     //choose a number (n) and pick the upgrade that was in nth place
     const randomKey = Math.floor(Math.random() * upgradeKeys.length);
     //that number is the index of the upgrade we are going to nominate (barring restrictions)
     const chosenUpgrade = upgradesArray[randomKey];
-    
-    // get all upgrades the sample unit has so far
-    // - we have this in the variable usedUpgrades
-    // check for all upgrades that can't be used with them
-    const compatibilityCheck = (upgrade) => {
-        console.log('compat check running')
-        let upgradeName = upgrade.name;
-        upgradeName = upgradeName.split(' ').join('');
-        const property = `canHave${upgradeName}`
-        if(chosenUpgrade[property] == false){
-            console.log('You cant have a ' + upgradeName)
-        } else {
-            console.log(chosenUpgrade.name + " is still elligible.");
-        }};
-
-        usedUpgrades.forEach(upgrade => {
-            compatibilityCheck(upgrade); 
-         });
     return chosenUpgrade.name;
 }
-
-const findUpgradeIndexByName = (name) => {
-    return upgradesArray.findIndex(upgrade => upgrade.name === name);
-};
 
 
 //prompt the user to choose their next upgrade
 function promptUserToUpgrade(){
-    //console.log(x);
+    
     let choiceA = nominateUpgrade();
     let choiceB = nominateUpgrade();
     //this prevents us from randomly getting 2 of the same upgrade
@@ -305,13 +241,12 @@ function promptUserToUpgrade(){
         choiceB = nominateUpgrade();
     } while(choiceA == choiceB)
     
-    let playerDecision = prompt(`Will you outfit your soldiers with ${choiceA} or ${choiceB}?`)
+    let playerDecision = prompt(`Will you outfit your ${defaultSquad.name} with ${choiceA} or ${choiceB}?`)
     console.log(`You chose ${playerDecision}!`);
-    upgradeSoldiers(playerDecision, defaultSquad.units);
-    //need to add playerDecision object onto the end of the usedUpgrades array
-    const upgradeIndex = findUpgradeIndexByName(playerDecision);
-    usedUpgrades.push(upgradesArray[upgradeIndex]);
-    delete upgrades[playerDecision];
+    defaultSquad.units.forEach(unit => {
+        unit.upgradeUnit(playerDecision)
+    });
+    
 }
 
 //finds the larger of two clashing armies (used for combat to determine number of units that will be attacking in a round)
@@ -328,11 +263,11 @@ function roundOfCombat(x, y, z){
     console.log(`Round: ${z}`)
 
     // DETERMINE TURN ORDER //
-    // if soldiers have first strike, and enemies don't
+    // if units have first strike, and enemies don't
     if(x[0].firstStrike == true && y[0].firstStrike == false) {
         console.log(`${x[0].name} has first strike!`)
         x.forEach(unit => {
-            // soldiers attack, in a row, one at a time
+            // units attack, in a row, one at a time
             attack(unit, y);
         })
         y.forEach(unit => {
@@ -341,7 +276,7 @@ function roundOfCombat(x, y, z){
         })
     } 
 
-    // if enemies have first strike, and soldiers don't
+    // if enemies have first strike, and units don't
     else if (x[0].firstStrike == false && y[0].firstStrike == true){
         console.log(`${y[0].name} has first strike!`)
         y.forEach(unit => {
@@ -349,7 +284,7 @@ function roundOfCombat(x, y, z){
             attack(unit, x)
         })
         x.forEach(unit => {
-            // surviving soldiers strike back
+            // surviving units strike back
             attack(unit, y);
         })
     } 
@@ -362,8 +297,9 @@ function roundOfCombat(x, y, z){
     // we detemine larger army so that we know how many turns per round there are
     let biggerArmy = determineLargerArmy(x, y);
         for (let i = 0; i < biggerArmy.length; i++){
-            //If there are 5 soldiers and 20 goblins
-            //ex: on round 1, soldier 1 attacks goblin 1, repeat until all 20 goblins have had attacked
+            console.table(x);
+            //If there are 5 units and 20 goblins
+            //ex: on round 1, unit 1 attacks goblin 1, repeat until all 20 goblins have had attacked
             attack(x[i], y)
             attack(y[i], x)
         }
@@ -379,7 +315,7 @@ function battle(x, y){
     do {
         numberOfRounds++;
         roundOfCombat(x.units, y.units, numberOfRounds);
-    } while(x.units.length > 0 && y.units.length > 0);
+    } while(x.units.length > 0 && y.units.length > 0 && numberOfRounds !== 2);
     //roundOfCombat(x.units, y.units, numberOfRounds)
     if(x.units.length > 0){
         battleResults(x, y);
@@ -393,19 +329,20 @@ function battle(x, y){
 //report results of battle//
 function battleResults(w, l){
     let remainingUnits = w.units;
-    console.log(`BATTLE REPORT:
-    ${w.name} is victorious! ${remainingUnits.length} units live on to battle another day! 
-    ${l.name} is no more!`)
-}
+    console.log(
+        `BATTLE REPORT:
+        ${w.name} is victorious! ${remainingUnits.length} units live on to battle another day! 
+        ${l.name} is no more!`)
+    }
 
 // check if alive/dead function
 function checkHitPoints(index, squad){
     let unit = squad[index];
-    if(unit.hp < 1){
+    if(unit.totalHp() < 1){
         console.log(`${unit.name} died.`)
         squad.splice(unit, 1);
     } else {
-        console.log(`${unit.name} is alive, with ${unit.hp} health.`)
+        console.log(`${unit.name} is alive, with ${unit.totalHp} health.`)
     }
 }
 // attack function
@@ -428,17 +365,18 @@ function attack(attackingUnit, defendingArmy){
     if (hitScore <= attackingUnit.toHit) {
         //console.log(`Its a hit!`);
         let avoidanceCheck = Math.round((Math.random()*100));
-        //console.log(`Avoidance: ${avoidanceCheck}, needs less than ${defendingUnit.avoidance} to avoid damage.`);
+        //console.log(`Avoidance: ${avoidanceCheck}, needs less than ${defendingUnit.avoidance} to avoid dmg.`);
         if (avoidanceCheck >= defendingUnit.avoidance){
+
             console.log(`${attackingUnit.name} hit ${defendingUnit.name} for ${attackingUnit.dmg}!`)
             defendingUnit.hp -= attackingUnit.dmg;
-            console.log(`${defendingUnit.name}'s HP: ${defendingUnit.hp}`)
-            if(defendingUnit.hp <= 0){
+            console.log(`${defendingUnit.name}'s HP: ${defendingUnit.totalHp()}`)
+            if(defendingUnit.totalHp() <= 0){
                 //if the defender's HP is zero, then it needs to be deleted from its squad
                 checkHitPoints(0, defendingArmy);
             }
         } else{
-            console.log(`${defendingUnit.name} avoided the attack! No damage done!`)
+            console.log(`${defendingUnit.name} avoided the attack! No dmg done!`)
         }
     } else {
         console.log(`Its a miss!`)
