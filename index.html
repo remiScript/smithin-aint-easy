@@ -4,10 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <!--<script src="app.js" defer></script>-->
 </head>
-<body style="background-color: #111;">
-    <h1>GitHubTest</h1>
-    <p>Ice Giant's Hitpoints:</p>
+<body>
+    <div class="container">
+        <div class="row" style="gap: 10px;">
+            <div class="column userImgColumn box">
+                <img class="userImg" src="/Images/Icons/UI/Hammer.png" alt="">
+            </div>
+            <div class="column userStatsColumn">
+                <div class="row lowLight">
+                    <div class="column">
+                        <p>JCB088</p>
+                    </div>
+                    <div class="column goldIndicator">
+                        <div class="row">
+                            <img src="Images/Icons/UI/goldSmall.png" alt="">
+                            <p style="color: gold;">74</p>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="row lowLight">
+                    <p>RANK:</p>
+                    <p>14</p>
+                </div>
+            </div>
+        </div>
+        <div class="row iconRow">
+            <div class="column iconColumn lowLight button-glow">
+                <img src="/Images/Icons/UI/gold.png" alt="">
+                <p class="iconText">SHOP</p>
+            </div>
+            <div class="column iconColumn lowLight button-glow">
+                <img src="/Images/Icons/UI/advanced scroll.png" alt="">
+                <p class="iconText">QUEST</p>
+            </div>
+            <div class="column iconColumn lowLight button-glow">
+                <img src="/Images/Icons/UI/old book.png" alt="">
+                <p class="iconText">RANKINGS</p>
+            </div>
+        </div>
+        <div class="row iconRow">
+            <div class="column iconColumn lowLight button-glow">
+                <img src="/Images/Icons/UI/inventory.png" alt="">
+                <p class="iconText">Inventory</p>
+            </div>
+            <div class="column iconColumn lowLight button-glow">
+                <img src="/Images/Icons/Enemies/dragon.png" alt="">
+                <p class="iconText">Bestiary</p>
+            </div>
+            <div class="column iconColumn lowLight button-glow">
+                <img src="/Images/Icons/UI/Rankings.png" alt="">
+                <p class="iconText">RANKINGS</p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

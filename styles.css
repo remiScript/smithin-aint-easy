@@ -1,0 +1,125 @@
+.montserrat-heading800 {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+  }
+
+  .montserrat-heading600 {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+  }
+
+* {
+    border-radius: 10px;
+    color: white;
+    border: 0px solid greenyellow;
+}
+body {
+    background-color: #222;
+    padding: 25px;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+    gap: 15px;
+    background-color: #111;
+    padding: 15px;
+    background-image: linear-gradient(to bottom right, #2e344b, #000000);
+}
+
+.container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.userImgColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    width: 150px;
+}
+
+.userImg {
+    border-radius: 150px;
+}
+
+.userStatsColumn {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+}
+
+.goldIndicator div img {
+    max-width: 20px;
+    height: 20px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.iconRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.iconColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px 8px 5px 8px;
+    flex: 1;
+}
+
+.iconColumn img {
+    max-width: 50px;
+}
+
+.iconText {
+    font-size: 12px;
+    text-align: center;
+}
+
+p {
+    margin: 8px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.lowLight {
+    background-color: #34364687;
+}
+
+.button-glow:hover {
+    background: linear-gradient(90deg, #ff6f00, #ffb300);
+    border-color: #00ffcc;
+    animation: rolling-glow-animation 1s ease-in-out infinite;
+    
+  }
+  
+  @keyframes rolling-glow-animation {
+    0% {
+        transform: scale(1);
+        border-color: #00ffcc;
+        box-shadow: 0 0 5px #ff6f00;
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 0 7px #ffb300; /* stronger glow */
+      }
+    100% {
+        transform: scale(1);
+        border-color: #00ffcc;
+        box-shadow: 0 0 5px #ff6f00;
+    }
+  }
