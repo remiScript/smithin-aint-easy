@@ -21,7 +21,7 @@ body {
     background-color: #222;
     padding: 25px;
 }
-.container {
+.mainMenuContainer {
     display: flex;
     flex-direction: column;
     max-width: 350px;
@@ -31,7 +31,7 @@ body {
     background-image: linear-gradient(to bottom right, #2e344b, #000000);
 }
 
-.container img {
+.mainMenuContainer img {
     max-width: 100%;
     height: auto;
 }
@@ -122,4 +122,19 @@ p {
         border-color: #00ffcc;
         box-shadow: 0 0 5px #ff6f00;
     }
+  }
+
+  .enemyCardContainer {
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+    gap: 5px;
+    background-color: #111;
+    padding: 15px;
+    background-image: linear-gradient(to bottom right, #2e344b, #000000); 
+  }
+
+  .monsterStats {
+    display: flex;
+
   }
