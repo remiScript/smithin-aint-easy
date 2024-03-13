@@ -1,21 +1,7 @@
-.montserrat-heading800 {
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 800;
-    font-style: normal;
-  }
-
-  .montserrat-heading600 {
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 600;
-    font-style: normal;
-  }
-
 * {
     border-radius: 10px;
     color: white;
-    border: 0px solid greenyellow;
+    border: 1px solid orange
 }
 body {
     background-color: #222;
@@ -29,6 +15,8 @@ body {
     background-color: #111;
     padding: 15px;
     background-image: linear-gradient(to bottom right, #2e344b, #000000);
+    box-shadow: #000000 5px 5px 10px 1px;
+    border: 1px solid black;
 }
 
 .mainMenuContainer img {
@@ -40,12 +28,13 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    
     width: 150px;
 }
 
 .userImg {
     border-radius: 150px;
+    border: 1px solid black;
+    box-shadow: #000000 5px 5px 10px 1px;
 }
 
 .userStatsColumn {
@@ -54,6 +43,15 @@ body {
     width: 100%;
     gap: 5px;
 }
+.animateGoldText {
+    background-image: linear-gradient(45deg, black, rgb(255, 111, 0), orange, yellow, white, white);
+    background-clip: text;
+    color: transparent;
+    background-size: 300%;
+    background-position: left;
+    animation: changeColor 2s ease-in-out infinite alternate;
+}
+
 
 .goldIndicator div img {
     max-width: 20px;
@@ -78,6 +76,7 @@ body {
     align-items: center;
     padding: 5px 8px 5px 8px;
     flex: 1;
+    box-shadow: #000000 5px 5px 10px 1px;
 }
 
 .iconColumn img {
@@ -97,12 +96,14 @@ p {
 }
 
 .lowLight {
-    background-color: #34364687;
+    background-color: #343646;
+    border: 1px solid black;
+    box-shadow: #000000 5px 5px 10px 1px;
 }
 
 .button-glow:hover {
     background: linear-gradient(90deg, #ff6f00, #ffb300);
-    border-color: #00ffcc;
+    border-color: #000000;
     animation: rolling-glow-animation 1s ease-in-out infinite;
     
   }
@@ -110,7 +111,7 @@ p {
   @keyframes rolling-glow-animation {
     0% {
         transform: scale(1);
-        border-color: #00ffcc;
+        border-color: #000000;
         box-shadow: 0 0 5px #ff6f00;
     }
     50% {
@@ -119,7 +120,6 @@ p {
       }
     100% {
         transform: scale(1);
-        border-color: #00ffcc;
         box-shadow: 0 0 5px #ff6f00;
     }
   }
@@ -128,13 +128,91 @@ p {
     display: flex;
     flex-direction: column;
     max-width: 350px;
-    gap: 5px;
+    gap: 10px;
     background-color: #111;
     padding: 15px;
     background-image: linear-gradient(to bottom right, #2e344b, #000000); 
+    box-shadow: #000000 5px 5px 10px 1px;
+    border: 1px solid black;
+    background-image: linear-gradient(45deg, black, green, black, green);
+    background-size: 310%;
+    background-position: left;
+    animation: changeColor 5s ease-in-out infinite alternate; /* Adjust duration as needed */;
+  }
+
+  @keyframes changeColor {
+    0% {
+        background-position: left;
+    }
+    100% {
+        background-position: right;
+    }
+}
+
+  .monsterDescriptionContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .monsterStatsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    padding: 8px;
+    
   }
 
   .monsterStats {
     display: flex;
-
   }
+
+  .monsterStats p {
+    margin: 3px;
+  }
+
+  .inventoryContainer {
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+    gap: 15px;
+    background-color: #111;
+    padding: 15px;
+    background-image: linear-gradient(to bottom right, #2e344b, #000000);
+    margin-top: 10px;
+    box-shadow: #000000 5px 5px 10px 1px;
+    border: 1px solid black;
+}
+
+
+p {
+    display: flex;
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+}
+
+.upgradePromptContainer {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+    gap: 15px;
+    background-color: #111;
+    padding: 15px;
+    background-image: linear-gradient(to bottom right, #2e344b, #000000);
+    box-shadow: #000000 5px 5px 10px 1px;
+    border: 1px solid black;
+}
+
+.bestiaryContainer {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+    gap: 15px;
+    background-color: #111;
+    padding: 15px;
+    background-image: linear-gradient(to bottom right, #2e344b, #000000);
+    box-shadow: #000000 5px 5px 10px 1px;
+    border: 1px solid black;
+}

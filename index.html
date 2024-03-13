@@ -4,32 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="stylesNew.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
-    <!--<script src="app.js" defer></script>-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;1,200&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;1,100&display=swap" rel="stylesheet">
+    <script src="app.js" defer></script>
 </head>
 <body>
-    <div class="mainMenuContainer">
-        <div class="row" style="gap: 10px;">
-            <div class="column userImgColumn box">
-                <img class="userImg" src="/Images/Icons/UI/Hammer.png" alt="">
+    <!-- API Demo, using Giphy's API-->
+    <div class="objContainer">
+        <img id="apiImgDemo" src="#" alt="">
+        <button id="refreshBtn">BLACKSMITHING!</button>
+    </div>
+    <!-- Create Account Form-->
+    <div class="objContainer">
+        <form id="signUpForm" action="#">
+            <div class="form-group">
+                <label for="username">Username <span id="usernameGoldCheck" class="hidden goldShimmer goldConfirmationChecks">&#10003;</span></label>
+                <input class="lowLight signUpFormInput" type="text" id="username" name="username" value="" required>
+                <p id="usernameError" class="formErrorMessage hidden">Username must be between 3 and 16 characters.</p>
+                
             </div>
-            <div class="column userStatsColumn">
+            <div class="form-group">
+                <label for="password">Password <span id="passwordGoldCheck" class="hidden goldShimmer goldConfirmationChecks">&#10003;</span></label>
+                <input class="lowLight signUpFormInput" type="password" id="password" name="password" value="" required>
+                <p id="passwordError" class="formErrorMessage hidden">
+                    Passwords must:<br>
+                    Be at least 8 characters<br>
+                    Have at least 1 capital letter<br>
+                    Have at least 1 number
+                </p>
+            </div>
+            <div class="form-group">
+                <label for="passwordConfirmation">Password Confirmation <span id="passwordConfirmationGoldCheck" class="hidden goldShimmer goldConfirmationChecks">&#10003;</span></label>
+                <input class="lowLight signUpFormInput" type="password" id="passwordConfirmation" name="passwordConfirmation" value="" required>
+                <p id="passwordConfirmationError" class="formErrorMessage hidden">Passwords must match</p>
+            </div>
+            <div class="form-group">
+                <label for="email">Email <span id="emailGoldCheck" class="hidden goldShimmer goldConfirmationChecks">&#10003;</span></label>
+                <input class="lowLight signUpFormInput" type="email" id="email" name="email" value="" required>
+                <p id="emailError" class="formErrorMessage hidden">
+                    Email must be formatted like:<br>
+                    griswold@tristram.com
+                </p>
+            </div>
+            <div class="form-group">
+                <button id="signUpFormBtn" class="formSubmissionBtn" type="submit" disabled>SUBMIT</button>
+            </div>
+        </form>
+    </div>
+    <!-- Main menu -->
+    <div class="objContainer">
+        <!-- User info-->
+        <div class="row">
+            <div class="userAvatarColumn">
+                <img style="background-color: black;" src="Images/Icons/UI/Hammer.png" alt="">
+            </div>
+            <div class="headingInfoBarColumn">
                 <div class="row lowLight">
-                    <div class="column">
                         <p>JCB088</p>
-                    </div>
-                    <div class="column goldIndicator">
-                        <div class="row">
+                        <div class="quickStat">
                             <img src="Images/Icons/UI/goldSmall.png" alt="">
-                            <p style="color: gold;">74</p>
+                            <p class="goldShimmer">74</p>  
                         </div>
-                        
-                    </div>
-                    
                 </div>
                 <div class="row lowLight">
                     <p>RANK:</p>
@@ -37,71 +83,321 @@
                 </div>
             </div>
         </div>
-        <div class="row iconRow">
-            <div class="column iconColumn lowLight button-glow">
-                <img src="/Images/Icons/UI/gold.png" alt="">
+        <!-- User functions Row-->
+        <div class="row">
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/UI/gold.png" alt="">
                 <p class="iconText">SHOP</p>
             </div>
-            <div class="column iconColumn lowLight button-glow">
-                <img src="/Images/Icons/UI/advanced scroll.png" alt="">
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/UI/advanced scroll.png" alt="">
                 <p class="iconText">QUEST</p>
             </div>
-            <div class="column iconColumn lowLight button-glow">
-                <img src="/Images/Icons/UI/old book.png" alt="">
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/UI/old book.png" alt="">
                 <p class="iconText">RANKINGS</p>
             </div>
         </div>
-        <div class="row iconRow">
-            <div class="column iconColumn lowLight button-glow">
-                <img src="/Images/Icons/UI/inventory.png" alt="">
-                <p class="iconText">INVENTORY</p>
+        <!-- User functions Row-->
+        <div class="row">
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/UI/inventory.png" alt="">
+                <p>INVENTORY</p>
             </div>
-            <div class="column iconColumn lowLight button-glow">
-                <img src="/Images/Icons/Enemies/mimic.png" alt="">
-                <p class="iconText">BEASTIARY</p>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/mimic.png" alt="">
+                <p>BESTIARY</p>
             </div>
-            <div class="column iconColumn lowLight button-glow">
-                <img src="/Images/Icons/Enemies/armor.png" alt="">
-                <p class="iconText">CLASSES</p>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/armor.png" alt="">
+                <p>CLASSES</p>
             </div>
         </div>
     </div>
-    <div class="enemyCardContainer" style="margin-top: 10px;">
-        <div class="row">
-            <p>Dragon</p>
-            <div class="goldIndicator">
-                <div class="row">
+    
+    <!-- Enemy card-->
+    <div class="objContainer">
+        <!-- Monster name, number, gold value-->
+        <div class="row lowLight">
+            <div class="quickStat">
+                <p>DRAGON</p>
+                <p class="subtleText">72/100</p>
+            </div>
+            <div class="quickStat">
                     <img src="Images/Icons/UI/goldSmall.png" alt="">
-                    <p style="color: gold;">35</p>
-                </div>
+                    <p class="goldShimmer">35</p>
             </div>
             
         </div>
-        <div class="row" style="background-color: black;">
+        <!-- Monster image -->
+        <div class="row cardImgDiv lowLight">
             <img src="Images/Icons/Enemies/dragon.png" alt="" style="max-width: 200px; margin: auto;">
         </div>
-        <div class="row">
-            <div class="monsterStats">
-                <img src="Images/Icons/Upgrades/hp.png" alt="" style="max-width: 20px; margin: auto;">
-                <p>30</p>
+        <!-- Monster stats-->
+        <div class="lowLight">
+            <div class="row topRowStatsBottomMarginAdjust">
+                <div class="quickStat">
+                    <img src="Images/Icons/Upgrades/hp.png" alt="">
+                    <p>30</p>
+                </div>
+                <div class="quickStat">
+                    <img src="Images/Icons/Accessories/rageCrystal.png" alt=""">
+                    <p>Fire Breath</p>
+                </div>
             </div>
-            <div class="monsterStats">
-                <img src="Images/Icons/Accessories/rageCrystal.png" alt="" style="max-width: 20px; margin: auto;">
-                <p>Fire Breath</p>
+            <div class="row">
+                <div class="quickStat">
+                    <img src="Images/Icons/Upgrades/dmg.png" alt="">
+                    <p>6</p>
+                </div>
+                <div class="quickStat">
+                    <img src="Images/Icons/Books and Scrolls/earth spellbook.png" alt="">
+                    <p>Dragon</p>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="monsterStats">
-                <img src="Images/Icons/Upgrades/dmg.png" alt="" style="max-width: 20px; margin: auto;">
-            <p>6</p>
-            </div>
-            <div class="monsterStats">
-                <img src="Images/Icons/Books and Scrolls/earth spellbook.png" alt="" style="max-width: 20px; margin: auto;">
-            <p>Dragon</p>
-            </div>
-        </div>
+        <!-- Monster Description -->
         <div class="row lowLight">
-            <p style="margin: 10px;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto facilis accusamus explicabo dicta repellat repudiandae iure voluptates quod laboriosam officia.</p>
+                <p>
+                    Description: <br>
+                    As intelligent as they are deadly, Dragons are possibly the most unpredictable creature in the kingdoms. If you ever encounter one, you're as likely of being set on fire as you are being ignored.
+                </p>
+        </div>
+    </div>
+
+    <!-- Class card-->
+    <div class="objContainer">
+        <!-- Class name, number, gold value-->
+        <div class="row lowLight">
+            <div class="quickStat">
+                <p>PALADIN</p>
+                <p class="subtleText"></p>
+            </div>
+            <div class="quickStat">
+                    <img src="" alt="">
+                    <p class="goldShimmer">Tier 3</p>
+            </div>
+            
+        </div>
+        <!-- Class image -->
+        <div class="row cardImgDiv lowLight">
+            <img src="Images/Icons/Classes/Paladin.png" alt="" style="max-width: 200px; margin: auto;">
+        </div>
+        <!-- Class stats-->
+        <div class="lowLight">
+            <div class="row topRowStatsBottomMarginAdjust">
+                <div class="quickStat">
+                    <img src="Images/Icons/Upgrades/hp.png" alt="">
+                    <p>18</p>
+                </div>
+                <div class="quickStat">
+                    <img src="Images/Icons/Accessories/greatshield.png" alt=""">
+                    <p>Greatshield</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="quickStat">
+                    <img src="Images/Icons/Upgrades/dmg.png" alt="">
+                    <p>3</p>
+                </div>
+                <div class="quickStat">
+                    <img src="Images/Icons/Books and Scrolls/earth spellbook.png" alt="">
+                    <p>Hero</p>
+                </div>
+            </div>
+        </div>
+        <!-- Class Description -->
+        <div class="row lowLight">
+                <p>
+                    Description: <br>
+                    Paladins are radiant, golden warriors who excel in avoiding damage. It took a lot of armor to get here, but its worth it.
+                </p>
+        </div>
+    </div>
+
+    <!-- Item card-->
+    <div class="objContainer">
+        <!-- Item name, number, gold value-->
+        <div class="row lowLight">
+            <div class="quickStat">
+                <p>Poisoned Blades</p>
+                <p class="subtleText"></p>
+            </div>
+            <div class="quickStat">
+                <img src="Images/Icons/UI/goldSmall.png" alt="">
+                <p class="goldShimmer">40</p>
+            </div>
+            
+        </div>
+        <!-- Class image -->
+        <div class="row cardImgDiv lowLight">
+            <img src="Images/Icons/Accessories/poisonedBlades.png" alt="" style="max-width: 200px; margin: auto;">
+        </div>
+        <!-- Class stats-->
+        <div class="lowLight">
+            <div class="row">
+                <div class="quickStat">
+                    <img src="Images/Icons/Upgrades/dmg.png" alt="">
+                    <p>1 each turn</p>
+                </div>
+                <div class="quickStat">
+                    <img src="Images/Icons/UI/inventory.png" alt="">
+                    <p>Accessory</p>
+                </div>
+            </div>
+        </div>
+        <!-- Class Description -->
+        <div class="row lowLight">
+                <p>
+                    Description: <br>
+                    The gift that keeps on giving! After hitting an enemy with poisoned blades, they will take 1 damage each turn, for the rest of combat.
+                </p>
+        </div>
+    </div>
+
+    <!-- Inventory-->
+    <div class="objContainer">
+        <p>INVENTORY:</p>
+        <!-- Row of items -->
+        <div class="row">
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Weapons/scepter.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Armor/leatherArmor.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Accessories/warPaint.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Accessories/trap.png" alt="">
+            </div>
+        </div>
+        <!-- Row of items -->
+        <div class="row">
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Weapons/greatsword.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Armor/plateArmor.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Accessories/rageCrystal.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Books and Scrolls/advanced spellbook.png" alt="">
+            </div>
+        </div>
+    </div>
+
+    <!-- Upgrade prompt modal-->
+    <div class="objContainer">
+        <p>Select your upgrade below:</p>
+        <div class="row">
+            <div class="tile button-glow lowLight">
+                    <img src="Images/Icons/Upgrades/hp.png" alt="">
+                    <p>+1 Hitpoints</p>
+            </div>
+            <div class="tile button-glow lowLight">
+                    <img src="Images/Icons/Upgrades/dmg.png" alt="">
+                    <p>+1 Damage</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quest prompt modal-->
+    <div class="objContainer">
+        <p>Who will your troops face next?</p>
+        <div class="row">
+            <div class="tile button-glow lowLight">
+                    <img src="Images/Icons/Enemies/dragon.png" alt="">
+                    <p>Dragon</p>
+                    <div style="display: flex;">
+                        <div class="quickStat">
+                            <img src="Images/Icons/Upgrades/hp.png" alt="">
+                            <p>30</p>
+                        </div>
+                        <div class="quickStat">
+                            <img src="Images/Icons/Upgrades/dmg.png" alt="">
+                            <p>3</p>
+                        </div>
+                    </div>
+            </div>
+            <div class="tile button-glow lowLight">
+                    <img src="Images/Icons/Enemies/frost champion.png" alt="">
+                    <p>Frost Champions</p>
+                    <div style="display: flex;">
+                        <div class="quickStat">
+                            <img src="Images/Icons/Upgrades/hp.png" alt="">
+                            <p>30</p>
+                        </div>
+                        <div class="quickStat">
+                            <img src="Images/Icons/Upgrades/dmg.png" alt="">
+                            <p>3</p>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bestiary-->
+    <div class="objContainer">
+        <p>BESTIARY:</p>
+        <div class="row">
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/abyssal dweller.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/armor.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/automaton beebot.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/automaton fighter.png" alt="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/automaton giant.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/automaton jaguar.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/automaton turret.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/crystal golem.png" alt="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/fire slime.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/djinn.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/boglurker.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/bat.png" alt="">
+            </div>
+        </div>
+        <div class="row">
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/young wind elemental.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/young phoenix.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/cyber snake.png" alt="">
+            </div>
+            <div class="tile button-glow lowLight">
+                <img src="Images/Icons/Enemies/darkwood witch.png" alt="">
+            </div>
         </div>
     </div>
 </body>

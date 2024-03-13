@@ -3,8 +3,8 @@ To Dos:
 ADD CUTE USER ICON OPTIONS
 Store units in its own JSON object
 Have user select upgrades by clicking button instead of typing
-Need encounter selector/Simulator
-NEED Game Over and New Game function
+Need logic for encounters, picking up quests, etc
+NEED New Game function and Game Over
 Need shop
 Need inventory functionality:
     Adding an item to inventory (for buying)
@@ -28,6 +28,7 @@ NEED EFFECTS FUNCTIONALITY:
     Rage(buff) - Units with "Rage" attack once more before dying.
     Misdirect(buff) - Units with "Misdirect" have a 50% chance upon avoiding damage to redirect that damage to their attacker.
 
+DONE - Need encounter selector/Simulator
 DONE (beta) - Create combat, need combat results
 DONE - Get combat rounds to run again and again until one side is defeated
 DONE - Ensure upgrade choices aren't duplicates
@@ -37,12 +38,202 @@ DONE! - TOTAL HP CALCULATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 DONE - Need equip function
 DONE - Worked out total/bonus/base stats (hp, dmg, avoidance, toHit)
 DONE - Need gold counter
+DONE - CREATED LOGIN FORM, VALIDATED USER INPUT
 
 
 IDEAS:
 Upgrade: Add squad member
-
 */
+
+// API DEMO STUFF
+const img = document.querySelector('#apiImgDemo');
+function getImg() {
+    fetch('https://api.giphy.com/v1/gifs/translate?api_key=myHwQ6ecEkEE2r487hUOp5NKnqPAHvGV&s=blacksmith', {mode: 'cors'})
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(response) {
+        let url = response.data.images.original.url
+        img.src = url;
+    });
+}
+let refreshBtn = document.getElementById('refreshBtn');
+refreshBtn.addEventListener('click', getImg)
+
+// -------- SIGNUP FORM STUFF ------ //
+let signUpform = document.getElementById('signUpForm');
+let username = document.getElementById('username');
+let password = document.getElementById('password');
+let passwordConfirmation = document.getElementById('passwordConfirmation');
+let email = document.getElementById('email');
+let signUpFormBtn = document.getElementById('signUpFormBtn');
+
+let usernameError = document.getElementById('usernameError');
+let passwordError = document.getElementById('passwordError');
+let passwordConfirmationError = document.getElementById('passwordConfirmationError');
+let emailError = document.getElementById('emailError');
+
+let usernameGoldCheck = document.getElementById('usernameGoldCheck');
+let passwordGoldCheck = document.getElementById('passwordGoldCheck');
+let passwordConfirmationGoldCheck = document.getElementById('passwordConfirmationGoldCheck');
+let emailGoldCheck = document.getElementById('emailGoldCheck');
+
+function enableSubmitBtn(form){
+    let goldConfirmationChecks = form.querySelectorAll('span.goldConfirmationChecks');
+    goldConfirmationChecks = Array.from(goldConfirmationChecks);
+    const hasAllChecks = goldConfirmationChecks.every(span => {
+        return !span.classList.contains('hidden')
+    });
+    if(hasAllChecks) {
+        signUpFormBtn.disabled = false;
+        return true;
+    } else {
+        signUpFormBtn.disabled = true;
+        return false;
+
+    }
+}
+
+
+//Add event listener for anytime the user clicks or tabs out of an input field
+//each field has its own criteria, via the "validate" functions below
+//and shows/hides error text depending on user input
+//username
+username.addEventListener('input', () => {
+    const label = document.querySelector(`label[for="username"]`);
+    if(validateUsername(username.value) == true){
+        label.style.color = '';
+        hideFormInlineErrorMessage(usernameError);
+        showFormInlineErrorMessage(usernameGoldCheck);
+    } else {
+        label.style.color = 'red';
+        showFormInlineErrorMessage(usernameError);
+        hideFormInlineErrorMessage(usernameGoldCheck);
+    }
+    enableSubmitBtn(signUpform);
+})
+//password
+password.addEventListener('input', () => {
+    
+    const passwordLabel = document.querySelector(`label[for="password"]`);
+    const passwordConfirmationLabel = document.querySelector(`label[for="passwordConfirmation"]`);
+    if(validatePassword(password.value) == true){
+        passwordLabel.style.color = '';
+        hideFormInlineErrorMessage(passwordError);
+        showFormInlineErrorMessage(passwordGoldCheck);
+        if(validatePasswordConfirmation(passwordConfirmation.value) == true){
+            passwordConfirmationLabel.style.color = '';
+            hideFormInlineErrorMessage(passwordConfirmationError);
+            showFormInlineErrorMessage(passwordGoldCheck);
+        } else {
+            console.log('something is false')
+        }
+    } else {
+        passwordLabel.style.color = 'red';
+        showFormInlineErrorMessage(passwordError);
+        hideFormInlineErrorMessage(passwordGoldCheck)
+    }
+    enableSubmitBtn(signUpform);
+})
+//password confirmation
+passwordConfirmation.addEventListener('input', () => {
+
+    const passwordConfirmationLabel = document.querySelector(`label[for="passwordConfirmation"]`);
+    const passwordLabel = document.querySelector(`label[for="password"]`);
+    if(validatePasswordConfirmation(passwordConfirmation.value) == true){
+        passwordConfirmationLabel.style.color = '';
+        hideFormInlineErrorMessage(passwordConfirmationError);
+        showFormInlineErrorMessage(passwordConfirmationGoldCheck);
+        if(validatePassword(password.value) == true){
+            passwordLabel.style.color = '';
+            hideFormInlineErrorMessage(passwordError);
+            showFormInlineErrorMessage(passwordConfirmationGoldCheck);
+        } else {
+            console.log('something is false')
+        }
+    } else {
+        passwordConfirmationLabel.style.color = 'red';
+        showFormInlineErrorMessage(passwordConfirmationError);
+        hideFormInlineErrorMessage(passwordConfirmationGoldCheck);
+    }
+    enableSubmitBtn(signUpform);
+})
+//email
+email.addEventListener('input', () => {
+    const label = document.querySelector(`label[for="email"]`);
+    if(validateEmail(email.value) == true){
+        label.style.color = '';
+        hideFormInlineErrorMessage(emailError);
+        showFormInlineErrorMessage(emailGoldCheck);
+    } else {
+        label.style.color = 'red';
+        showFormInlineErrorMessage(emailError);
+        hideFormInlineErrorMessage(emailGoldCheck);
+    }
+    enableSubmitBtn(signUpform);
+})
+
+//username criteria function, and test
+function validateUsername(username) {
+    let minLength = 3;
+    //. means any character, at least 3 of them, no maximum (the comma creates the range)
+    //if you're confused just look into regexp
+    let regexMinLength = new RegExp(`.{${minLength},}`);
+
+    return (
+        //each of these check is for a match
+        //is it 8 or more characters?
+        regexMinLength.test(username)
+    );
+}
+//password criteria function, and test
+function validatePassword(password) {
+    let minLength = 8;
+    //. means any character, at least 8 of them, no maximum (the comma creates the range)
+    //if you're confused just look into regexp
+    let regexMinLength = new RegExp(`.{${minLength},}`);
+    let regexUppercase = /[A-Z]/;
+    let regexLowercase = /[a-z]/;
+    let regexDigit = /[0-9]/;
+    let regexSpecial = /[\W_]/;
+
+    return (
+        //each of these check is for a match, not perfect, but inclusive
+
+        //is it 8 or more characters?
+        regexMinLength.test(password) &&
+        //does it have any uppercase letters?
+        regexUppercase.test(password) &&
+        //does it have an lowercase letters?
+        regexLowercase.test(password) &&
+        //does it have any numbers?
+        regexDigit.test(password) &&
+        //does it have any special characters?
+        regexSpecial.test(password)
+    );
+}
+//password confirmation criteria function, and test
+function validatePasswordConfirmation(passwordConfirmationValue) {
+    return password.value == passwordConfirmationValue;
+}
+//email criteria function, and test
+function validateEmail(email) {
+    // Regular expression pattern for email format validation
+    let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    // Check if the email matches the regular expression pattern
+    return regexEmail.test(email);
+}
+
+//show error text under form input
+function showFormInlineErrorMessage(errorMessage){
+    errorMessage.classList.remove('hidden')
+}
+//hide error text under form input
+function hideFormInlineErrorMessage(errorMessage){
+    errorMessage.classList.add('hidden')
+}
+
 // ------------------- Player ------------------------//
 class Player {
     constructor(){
@@ -111,13 +302,20 @@ function createSquire(){
     return new Unit('squire', 'Bone', 'none', 'none', 10, 1, 25, 95, 0);
 }
 
-function createGoblin(){
-    return new Unit('goblin', 'Bone', 'none', 'none', 1, 2, 5, 75, 1);
-
+function createAbyssalDweller(){
+    return new Unit('Abyssal Dweller', 'Claws', 'none', 'none', 1, 2, 5, 75, 1);
 }
 
-function createSpider(){
-    return new Unit('spider', 'Spider Fangs', 'none', 'none', 5, 1, 25, 75, 3);
+function createLivingArmor(){
+    return new Unit('Living Armor', 'None', 'Plate Armor', 'none', 10, 1, 15, 70, 3);
+}
+
+function createRobotFairy(){
+    return new Unit('Robot Fairy', 'None', 'Plate Armor', 'none', 3, 1, 15, 70, 3);
+}
+
+function createRobotSquire(){
+    return new Unit('Robot Squire', 'None', 'Plate Armor', 'none', 5, 1, 15, 70, 3);
 }
 
 // -------------------------------------------------------------- //
@@ -128,14 +326,24 @@ let defaultSquad = {
     units: callTheSquad(5, 'squire')
 }
 
-let goblinEncounter = {
-    name: "Goblins",
-    units: callTheSquad(10, 'goblin')
+let abyssalDwellerEncounter = {
+    name: "Abyssal Dwellers",
+    units: callTheSquad(10, 'Abyssal Dweller')
 }
 
-let spiderEncounter = {
-    name: "Spiders",
-    units: callTheSquad(5, 'spider')
+let livingArmorEncounter = {
+    name: "Living Armor",
+    units: callTheSquad(5, 'Living Armor')
+}
+
+let robotFairyEncounter = {
+    name: "Robot Fairy",
+    units: callTheSquad(5, 'Robot Fairy')
+}
+
+let robotSquireEncounter = {
+    name: "Robot Squire",
+    units: callTheSquad(5, 'Robot Squire')
 }
 
 // -------------------------------------------------------------- //
@@ -210,11 +418,17 @@ function callTheSquad(qty, unit){
             case "squire":
                 outputArray.push(createSquire());
                 break;
-            case "goblin":
-                outputArray.push(createGoblin());
+            case "Abyssal Dweller":
+                outputArray.push(createAbyssalDweller());
                 break;
-            case "spider":
-                outputArray.push(createSpider());
+            case "Living Armor":
+            outputArray.push(createLivingArmor());
+                break;
+            case "Robot Fairy":
+                outputArray.push(createRobotFairy());
+                break;
+            case "Robot Squire":
+                outputArray.push(createRobotFairy());
                 break;
             default:
                 console.log('Unknown type: ', y);
