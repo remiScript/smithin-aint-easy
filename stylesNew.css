@@ -1,0 +1,247 @@
+* {
+    border-radius: 10px;
+    border: 0px solid orange;
+}
+
+body {
+    background-color: #222;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+p {
+    margin: 8px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: whitesmoke;
+}
+
+label {
+    margin: 0px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: whitesmoke;
+}
+
+input {
+    height: 20px;
+    border-radius: 8px;
+    padding: 6px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: whitesmoke;
+}
+
+button {
+    font-family: "Montserrat", sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: black;
+    background-image: linear-gradient(45deg, rgb(255, 94, 0), orange, yellow, orange, rgb(255, 94, 0), orange, yellow);
+    background-size: 600%;
+    background-position: left;
+    animation: shiny 20s ease-in-out infinite alternate;
+    padding: 10px;
+    border: 1px solid black;
+    box-shadow: #000000 5px 5px 10px 1px;
+}
+
+.formSubmissionBtn[disabled]{
+    filter: grayscale(100%) brightness(10%) blur(1px);
+}
+
+.subtleText {
+    font-weight: 500;
+    color: #777;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.prerequesites p {
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.objContainer {
+    /*Refers to the:
+        Main menu container
+        Inventory menu container
+        Bestiary menu container
+        Class menu container
+        Card container (Class, Monster, Item)
+        Combat log container
+        Login Form Container
+        Quest Prompt Container
+        Upgrade Prompt Container
+        */
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        background-image: linear-gradient(to bottom right, #443b1f, #000000);
+        box-shadow: #000000 5px 5px 10px 1px;
+        border: 1px solid black;
+        margin: 10px;
+        width: 350px;
+        gap: 10px;
+}
+
+.row {
+    /*Unless otherwise specified, all rows have a minimum of 10px gap and otherwise try to space out as much as possible*/
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.headingInfoBarColumn {
+    /*This is the column that houses the heading bar on the: 
+        main menu
+        class/monster/item cards
+    */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex: 2;
+    gap: 0px;
+}
+
+.quickStat {
+    /*This div houses an image and a number, for shorthand representation
+        ex: (heart img) +1
+        Means +1 hitpoints
+    Used for gold, stats on monster cards, etc.
+    */
+    display: flex;
+    align-items: center;
+}
+
+.quickStat img {
+    max-width: 20px;
+    max-height: 20px;
+    margin-left: 8px;
+}
+
+.lowLight {
+    /*This class acts as a "foreground item" visualizer. It ads a subtle highlight and drop shadow, to pop sections out */
+    background-color: #464034;
+    border: 1px solid black;
+    box-shadow: #000000 5px 5px 10px 1px;
+}
+
+.goldShimmer {
+    color: transparent;
+    background-image: linear-gradient(45deg, rgb(255, 94, 0), orange, yellow, orange, rgb(255, 94, 0), orange, yellow);
+    background-size: 600%;
+    background-position: left;
+    background-clip: text;
+    animation: shiny 5s ease-in-out infinite alternate;
+}
+
+@keyframes shiny {
+    0% {
+        background-position: left;
+    }
+
+    50% {
+        background-position: right;
+    }
+    100% {
+        background-position: left;
+    }
+}
+
+.userAvatarColumn {
+    /*This is the column that houses the profile image in the main menu*/
+    display: flex;
+    flex: 1;
+}
+
+.userAvatarColumn img{
+    border-radius: 150px;
+    border: 1px solid black;
+    box-shadow: #000000 5px 5px 10px 1px;
+}
+
+.tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 8px 8px 8px;
+    /*The following 3 lines needed to be set to force the buttons to be the same width. Inventory was too wide as its a longer word. */
+    flex-grow: 1;
+    flex-basis: 0;
+    width: 0;
+    gap: 0px;
+}
+
+.tile:hover {
+    background: linear-gradient(45deg, #ff3700, #ffb300, yellow);
+    border-color: #ff6f00;
+    animation: rolling-glow 1s ease-in-out infinite;
+}
+
+
+
+.tile:hover p {
+    color: black;
+}
+
+@keyframes rolling-glow {
+    0% {
+        transform: scale(1);
+        box-shadow: 1px 1px 5px #ff6f003b;
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: 1px 1px 7px #ffb30071; /* stronger glow */
+      }
+    100% {
+        transform: scale(1);
+        box-shadow: 1px 1px 5px #ff6f0035;
+    }
+  }
+
+.tile img {
+    max-width: 50px;
+    height: auto;
+}
+
+.cardImgDiv {
+    background-color: black;
+}
+
+/*Use this class for class/monster/item cards, the row under the image, apply to the top row
+    it'll help merge them together
+*/
+.topRowStatsBottomMarginAdjust {
+    margin-bottom: -10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+:valid {
+    
+}
+
+:invalid {
+    color: red;
+}
+
+.formErrorMessage {
+    margin-left: 0px;
+    color: red;
+}
+
+.hidden {
+    display: none;
+}
