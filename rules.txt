@@ -1,8 +1,0 @@
-COMBAT:
-    Combat is done in rounds. There are no actions for players to take during combat, it resolves itself.
-    All of the strategy comes from choosing upgrades wisely.
-    
-    Example round:
-        Game checks for firstStrike, all soldiers/creatures with first strike go before anyone without. If both player and monster have it, player goes first. 
-
-        Squad of 6 soldiers (with bows) fight 20 goblins. One at a time, each soldier gets one shot at a goblin. If they miss, the next soldier goes and shoots the same goblin. Then, each goblin gets a chance to hit a soldier. This goes back and forth until one side is defeated. 

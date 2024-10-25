@@ -1,1 +1,0 @@
-# smithin-aint-easy
