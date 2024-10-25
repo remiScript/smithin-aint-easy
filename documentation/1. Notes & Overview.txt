@@ -1,0 +1,69 @@
+SMITHIN' AIN'T EASY>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Build plan:
+    Game:
+        1. Design the whole game, without coding it, you won't be able to test/balance, but establish all rules/items/features
+            > Create all items, monsters, classes, rules, features
+        2. Write logic for entire game, so it can be played in the console (Javascript)
+            > All UI items should have text representation
+            > Imagine a DOS/text based version of the game
+            > All data should be present at this point(JSON, sql)
+        3. Draft UI for all components of game
+            > Draw from what you've already made
+        4. Create UI (Svelte, CSS)
+
+    Other Components:
+        A. Login Screen
+            1. Establish logic for creating accounts/storing account data
+            2. Draft/design login screen
+            3. Using components from game UI, create login screen(CSS, Svelte)
+            4. Connect UI and data (Svelte, Js)
+
+        B. Leaderboards
+            1. Figure out how to store player info on the leaderboards
+            2. Design UI for leaderboards
+            3. Connect UI and data (Svelte, Js)
+
+        C. Project
+            1. Clean up all notes, separate into readme files for players and developers
+            2. Write description/case study for this project for your portfolio
+            3. Ensure github repo for this is polished
+
+
+
+In order for this project to be considered "done", or Version 1.0, at least, I would need to accomplish the following:
+    Game has to work:
+        All basic features of the game are included and work
+        I have some idea of how to work with this code to add/improve
+    Game is properly documented:
+        Write a readme that explains how to play
+            ++++Create a tutorial, in the site? Additional to the readme
+        Write a document that explains how the code works on a somewhat abstract level
+            Basic components, where data is kept, how the different files of the game work together
+            Write a list of all the .js files, what they're for, what they import/export to
+    Code is organized/written well
+        Comments are included
+        Code is separated into different .js files that are meant to group functions/features together
+    Case study on the project that goes with the project in my portfolio website
+        Project overview/description
+        What technologies does it use, and why?
+            HTML/CSS/JS/Framework?/Database?/VersionControl
+        Challenges/lessons/etc.
+    
+
+TOPICS:
+    Leaderboards: A page with info on other players who have tried, and how they've done
+        Player names
+        Final wave cleared
+        Gold earned
+    
+    For the player who's looking, there are several ways to do this, see below
+        Simplest - Player enters initials at game over, leaderboard records initials
+            Like an arcade, this means anyone who sees the leaderboards will just see the top X players
+        More interesting - Player can create login, upon logging in the player can
+            Check all of their past scores, and where they fall on the leaderboard
+            See their choices/data from their past games
+                What upgrades they used
+                What enemies they faced, each round

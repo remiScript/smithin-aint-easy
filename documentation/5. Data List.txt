@@ -1,0 +1,38 @@
+What data are we storing in a DB?
+
+Players
+
+Items
+    Name
+    Type
+    Tier
+    Purchase Cost
+    Sell Value
+    Atk Pwr
+    Armor
+    Effect
+    Image
+    Description
+
+
+Classes
+    Name
+    Tier
+    Image
+    Description
+    Prerequisite
+
+Monsters
+    Name
+    Reward Type
+    Reward Amt
+    HP
+    DMG
+    Skill
+    Type
+    Image
+    Description
+
+Status Effects
+    Poison
+
