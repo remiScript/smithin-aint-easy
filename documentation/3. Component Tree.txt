@@ -1,8 +1,10 @@
 Splash Screen
+
     Logo
     Elevator pitch/icebreaker description blurb
         Welcome to Smithin Ain't Easy! 
         Smithin Ain't Easy is a game where you're a blacksmith...
+
     Start New Game Button
         Game UI
             How to play blurb (pop up)
@@ -26,6 +28,17 @@ Splash Screen
                 Rankings Btn (leaderboards)
                 Inventory Btn
                 Bestiary Btn
+                    Bestiary Menu
+                        Salamander Btn
+                            Salamander (Monster Card)
+                        Knight Btn
+                            Knight (Monster Card)
+                        Mech Fairy Btn
+                            Mech Fairy (Monster Card)
+                        Mech Squire Btn
+                            Mech Squire (Monster Card)
+                        Mech Dreadnaught Btn
+                            Mech Dreadnaught (Monster Card)
                 Classes Btn
             Squad Card
                 Squad Description
@@ -61,6 +74,6 @@ Splash Screen
                 End game button
                 Theme/color/visual change button (F)
 
-
     Leaderboards Button
+
     Create Account Button

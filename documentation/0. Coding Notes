@@ -1,0 +1,4 @@
+When creating a unit, there is a process:
+    Refer to JSON data
+    Apply any modifiers (weapon, armor, accessory, bonus)
+    Then recalculate totalHp, totalDmg, etc... since totals begin at 0
