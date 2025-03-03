@@ -1,0 +1,81 @@
+[
+    {
+      "name": "Squire",
+      "tier": 0,
+      "requirements": "N/A",
+      "perk": "N/A",
+      "perkDescription": "N/A"
+    },
+    {
+      "name": "Soldier",
+      "tier": 1,
+      "requirements": ["Chain Armor", "Shield"],
+      "perk": "Momentum",
+      "perkDescription": "Soldiers get an additional 5% chance to hit whenever another soldier hits an enemy, resets each round."
+    },
+    {
+      "name": "Archer",
+      "tier": 1,
+      "requirements": ["Shortbow", "Leather Armor"],
+      "perk": "Take Advantage",
+      "perkDescription": "If an archer slays an enemy during first strike, they get to shoot again with 1/2 chance to hit."
+    },
+    {
+      "name": "Knight",
+      "tier": 2,
+      "requirements": ["Mace", "Plate Armor", "Shield"],
+      "perk": "Discourage",
+      "perkDescription": "If a Knight has more than 80% hp after taking damage from an enemy, they have a 1/2 chance to skip their next attack."
+    },
+    {
+      "name": "Barbarian",
+      "tier": 2,
+      "requirements": ["Great Axe", "War Paint"],
+      "perk": "Unpredictable",
+      "perkDescription": "When attacked, Barbarians have a 20% chance to intentionally get hit for a lesser amount, and follow up with a guaranteed strike for 1/2 damage."
+    },
+    {
+      "name": "Ranger",
+      "tier": 2,
+      "requirements": ["Longbow", "Leather Armor", "Trap"],
+      "perk": "Natural Enemy",
+      "perkDescription": "Rangers get to pick an enemy type and always do +1 damage to them, and take -1 damage from them."
+    },
+    {
+      "name": "Thief",
+      "tier": 2,
+      "requirements": ["Poisoned Blades", "Shadow Cloak"],
+      "perk": "Dual Wield",
+      "perkDescription": "Thieves attack twice per round, for 70% of their atk pwr."
+    },
+    {
+      "name": "Paladin",
+      "tier": 3,
+      "requirements": ["Mace", "Plate Armor", "Greatshield"],
+      "perk": "Holy Fervor",
+      "perkDescription": "Paladins heal 1hp at the start of each combat round."
+    },
+    {
+      "name": "Berzerker",
+      "tier": 3,
+      "requirements": ["Great Axe", "War Paint", "Rage Crystal"],
+      "perk": "Bloodlust",
+      "perkDescription": "Killing an enemy heals the Berzerker for 3hp."
+    },
+    {
+      "name": "Hunter",
+      "tier": 3,
+      "requirements": ["Longbow", "Wolf", "Trap"],
+      "perk": "Dog's Best Friend",
+      "perkDescription": "If your dire wolf dies, all hunters get a free attack against its killer."
+    },
+    {
+      "name": "Assassin",
+      "tier": 3,
+      "requirements": ["Poisoned Blades", "Ghostly Essence", "Shadow Cloak"],
+      "perk": "Frustrate",
+      "perkDescription": "Assassins get +5% chance to hit, and +5% avoidance for each successful misdirect, resets each combat."
+    }
+  ]
+  
+  

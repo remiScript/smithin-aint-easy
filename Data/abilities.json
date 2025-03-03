@@ -1,0 +1,98 @@
+[
+    {
+      "name": "Range",
+      "type": "buff",
+      "image": "",
+      "description": "Has first strike on first turn only."
+    },
+    {
+      "name": "Block",
+      "type": "buff",
+      "image": "",
+      "description": "Works like avoidance, but reduces damage by X, instead of outright."
+    },
+    {
+      "name": "Bulwark",
+      "type": "buff",
+      "image": "",
+      "description": "Works like block, reduces damage by X+1, and stuns enemies, skipping their next turn."
+    },
+    {
+      "name": "Set Trap",
+      "type": "buff",
+      "image": "",
+      "description": "Damage enemies for 5, when being attacked, once per combat, avoidable."
+    },
+    {
+      "name": "Inflict Poison",
+      "type": "buff",
+      "image": "",
+      "description": "Inflicts poison status on the enemy, causing them 1 damage after attacking for the rest of combat."
+    },
+    {
+      "name": "Poisoned",
+      "type": "debuff",
+      "image": "",
+      "description": "Any poisoned unit takes 1 damage after attacking. Lasts rest of combat."
+    },
+    {
+      "name": "Intimidate",
+      "type": "debuff",
+      "image": "",
+      "description": "Intimidated units have -1 attack, avoidable."
+    },
+    {
+      "name": "Enraged",
+      "type": "buff",
+      "image": "",
+      "description": "Enraged units attack once again upon dying."
+    },
+    {
+      "name": "Misdirect",
+      "type": "buff",
+      "image": "",
+      "description": "If the unit avoids damage, he rolls his avoidance again, if successful, the enemy hits a random target."
+    },
+    {
+      "name": "Pet Tank",
+      "type": "buff",
+      "image": "",
+      "description": "90% Avoidance until 6 damage has been avoided"
+    },
+    {
+      "name": "Inflict Freeze",
+      "type": "buff",
+      "image": "",
+      "description": "On hit, freezes enemy, skipping their turn, until they succeed an avoidance check, avoidable."
+    },
+    {
+      "name": "Frozen",
+      "type": "debuff",
+      "image": "",
+      "description": "Frozen units skip their turn until they succeed an avoidance check, unavoidable."
+    },
+    {
+      "name": "Inflict Burn",
+      "type": "buff",
+      "image": "",
+      "description": "On hit, burns enemy, doing 3 damage each turn, ends on successful avoidance check, avoidable."},
+    {
+      "name": "Burn",
+      "type": "debuff",
+      "image": "",
+      "description": "Burned units take 2 damage, when attacking, avoidable"
+    },
+    {
+      "name": "Shockwave",
+      "type": "buff",
+      "image": "",
+      "description": "After attacking, hit all enemies for 1, avoidable."
+    },
+    {
+      "name": "Crushing Blow",
+      "type": "buff",
+      "image": "",
+      "description": "Attacks instantly kill enemies with less than 1/2 your HP, avoidable."
+    }
+  ]
+  

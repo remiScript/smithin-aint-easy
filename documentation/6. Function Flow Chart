@@ -1,0 +1,17 @@
+startProgram()
+    loadData() (async function)
+    main()
+        gameSession()
+            newGameSetup()
+                createSquad()
+                generateConsoleUI()
+            Go to the shop?
+            Go on a quest?
+                This should initiate Combat
+                    After combat, check for win/loss condition
+            Look at rankings?
+            Look at your inventory?
+            Look at the bestiary?
+            Check out classes?
+            Look at your squad?
+            Look at options?

@@ -1,0 +1,67 @@
+This is a multi instance component that should appear for:
+    Monsters
+    Items
+    Classes
+
+No hard coded data lives in this components. Everything is imported/referenced/calculated
+
+
+
+
+ex Monster:
+
+(Top/header row)
+Name    bestiary #         reward
+DRAGON  72/100             (?G 35)
+
+(?Img)
+_____________Img_________________
+|                                |
+|                                |
+|                                |
+|                                |
+|                                |
+______________Img_________________
+
+(Quick stats row)
+(?HP:30)      (?Skill: Fire Breath)
+(?Atk:6)      (?Type: Dragon)
+
+(Description row)
+Description:
+Dragons blahblahblah blah blah blah
+Dragons blahblahblah blah blah blah
+Dragons blahblahblah blah blah blah
+Dragons blahblahblah blah blah blah
+
+
+
+
+
+
+
+
+ex Item:
+
+(Top/header row)
+Name             Item #      Value
+Poisoned Blades  72/100    (?G 35)
+
+(?Img)
+_____________Img_________________
+|                                |
+|                                |
+|                                |
+|                                |
+|                                |
+______________Img_________________
+
+(Quick stats row)
+(?Dmg:1/turn)    (?Type: Accessory)
+
+(Description row)
+Description:
+Poison your foes! Watch em die! cs
+asij asoi ioas ias diojdasoi jasod
+asod j fewoi vjoas oivsj csdoiqn A
+casoijas aso co oioi oi asoid jd f

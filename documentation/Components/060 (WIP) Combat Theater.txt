@@ -1,0 +1,31 @@
+BIG Component, still WIP
+
+Ideas:
+    - Lay Units/enemies out in some kind of formation (basic, but visual)
+    - Have a combat log that goes through the combat turns, one at a time
+    - Have really simple CSS animations correspond with the turns
+    - Player doesn't really interact, it's just for making combat interesting to watch
+
+    ________        ________
+   |        |      |        |
+   |   U1   |      |   E1   |
+   |        |      |        |
+    --------        --------
+    ________        ________
+   |        |      |        |
+   |   U2   |      |   E2   |
+   |        |      |        |
+    --------        --------
+    ________        ________
+   |        |      |        |
+   |   U3   |      |   E3   |
+   |        |      |        |
+    --------        --------
+
+    Combat log:
+    _________________________
+   |Turn 1: U1 hits E1 for 6!|
+   |Turn 2: E1 hits U1/U2/U3 |
+   |for 1!                   |
+   |                         |
+    -------------------------

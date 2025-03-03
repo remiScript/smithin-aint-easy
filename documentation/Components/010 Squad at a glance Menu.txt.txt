@@ -1,0 +1,7 @@
+Squad at a glance Menu (010 Squad at a glance Menu.txt)
+    Unit #1 Quickstats (011 Quickstats.txt)
+    Unit #2 Quickstats (same)
+    Unit #3 Quickstats (same)
+    etc...
+    Open Squad Status Menu (btn)
+        Opens (012 Squad Status Menu.txt)

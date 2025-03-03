@@ -5,11 +5,11 @@ SMITHIN' AIN'T EASY>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 Build plan:
     Game:
         1. Design the whole game, without coding it, you won't be able to test/balance, but establish all rules/items/features
-            > Create all items, monsters, classes, rules, features
+            > Create items, monsters, classes, rules, features
         2. Write logic for entire game, so it can be played in the console (Javascript)
             > All UI items should have text representation
             > Imagine a DOS/text based version of the game
-            > All data should be present at this point(JSON, sql)
+            > All data should be present at this point(JSON, sql, postgres/sqlite)
         3. Draft UI for all components of game
             > Draw from what you've already made
         4. Create UI (Svelte, CSS)
@@ -67,3 +67,15 @@ TOPICS:
             See their choices/data from their past games
                 What upgrades they used
                 What enemies they faced, each round
+
+IDEAS:
+    Player actions during combat?
+        send item to unit
+        throw item at enemy
+        activate item (if item has special properties?)
+    How to play file/component
+        Can I sync up the readme with the in-game help guide?
+    Different starter squads?
+        2 Dragons
+        20 Skeleton Archers
+        Random Mode

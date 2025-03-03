@@ -1,0 +1,11 @@
+Inventory Heading
+Item Grid (101 Item Grid.txt)
+    Data pulled from player's inventory
+_____________
+| [] [] ___ |
+| [] [] | | |
+| [] [] --- |
+|   Card ^  |
+-------------
+    
+Sell btn (only appears if inventory is opened from (050 Shop Menu.txt) )

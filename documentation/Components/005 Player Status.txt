@@ -1,0 +1,6 @@
+    Player Status (005 Player Status.txt)
+        Player Icon (img, imported data from User's account object)
+        Username (txt, imported data from User's account object)
+        Gold ( 071 Gold Indicator.txt )
+        Wave Label (txt)
+        Actual Wave (num, variable, from current game session)

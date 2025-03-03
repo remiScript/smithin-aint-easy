@@ -1,0 +1,12 @@
+Title Screen (sv component) --------------------------------------------
+    Logo (img)
+    Elevator pitch/icebreaker description blurb (Text bubble/window/card)
+        Welcome to Smithin Ain't Easy! 
+        Smithin Ain't Easy is a game where you're a blacksmith...
+    Start New Game Button
+        -001 Game UI.txt
+    Leaderboards Button
+        -002 Leaderboards.txt
+    Create Account Button
+        -003 Create Account.txt
+-------------------------------------------------------------------------

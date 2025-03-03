@@ -1,0 +1,14 @@
+Quest Menu Heading
+    Wave 1: Dragons - Slain! (these generate from prior wins)
+        Combat Replay Btn (Opens (060 Combat Theater.txt) )
+        Combat Results Btn (Opens (061 Combat Results.txt) )
+    Wave 2: Wizards - Slain!
+        (same buttons as Wave 1)
+    Wave 3: Giants - Slain!
+        (same buttons as Wave 1)
+    Wave 4: ?????? (current wave, highlighted)
+    Next quest btn
+        Opens Choice Menu (Monster A or B, 100 Choice Menu.txt)
+            For each choice, supply the monster card on button hover/select
+            Confirm Button
+                Starts next encounter ((060 Combat Theater.txt), via the context window)

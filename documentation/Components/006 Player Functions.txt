@@ -1,0 +1,19 @@
+Player Functions
+
+    Shop (Btn, from playerFunctions array)
+        Opens Shop (050 Shop Menu.txt)
+
+    Quests (Btn, from playerFunctions array)
+        Opens Quest Menu (051 Quest Menu.txt)
+
+    Rankings (Btn, from playerFunctions array)
+        Opens Leaderboards Menu (002 Leaderboards.txt)
+
+    Inventory (Btn, from playerFunctions array)
+        Opens Inventory Menu (052 Inventory Menu.txt)
+
+    Bestiary (Btn, from playerFunctions array)
+        Opens Bestiary Menu (053 Bestiary Menu.txt)
+
+    Classes (Btn, from playerFunctions array)
+        Opens Class Menu (054 Classes Menu.txt)

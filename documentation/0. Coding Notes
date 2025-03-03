@@ -2,3 +2,10 @@ When creating a unit, there is a process:
     Refer to JSON data
     Apply any modifiers (weapon, armor, accessory, bonus)
     Then recalculate totalHp, totalDmg, etc... since totals begin at 0
+    There may be some attributes that can be added when the unit is created:
+        Units Killed: This is a per session stat
+        Bonus stats: 
+            Why declare these in the object itself? Isn't that just a lot of extra writing, in the JSON file? 
+            Couldn't you just add these key:value pairs at the time the unit is created?
+            Would this break any functions that are part of these objects by having references to stats that didn't exist at one time?
+            Or do I add those functions to the constructor, the same one that'll add in those key:value pairs?

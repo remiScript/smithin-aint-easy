@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert JSON Keys to Camel Case</title>
+</head>
+<body>
+    <h2>Upload a JSON File</h2>
+    <input type="file" id="fileInput" />
+    
+    <h2>Original JSON</h2>
+    <pre id="original"></pre>
+    
+    <h2>Converted JSON (CamelCase Keys)</h2>
+    <pre id="camelCase"></pre>
+
+    <script>
+        // Function to convert string to camelCase
+        function toCamelCase(str) {
+            return str
+                .replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) =>
+                    index === 0 ? match.toLowerCase() : match.toUpperCase()
+                )
+                .replace(/\s+/g, '')
+                .replace(/([a-z])([A-Z])/g, '$1$2');
+        }
+
+        // Function to convert all keys of an object to camelCase
+        function convertToCamelCase(obj) {
+            const newObj = {};
+            for (const key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    newObj[toCamelCase(key)] = obj[key];
+                }
+            }
+            return newObj;
+        }
+
+        // Event listener for file upload
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+
+            if (file && file.type === 'application/json') {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    try {
+                        // Parse the JSON content
+                        const originalObj = JSON.parse(e.target.result);
+
+                        // Convert keys to camelCase
+                        const camelCaseObj = convertToCamelCase(originalObj);
+
+                        // Display original and converted JSON
+                        document.getElementById('original').textContent = JSON.stringify(originalObj, null, 2);
+                        document.getElementById('camelCase').textContent = JSON.stringify(camelCaseObj, null, 2);
+                    } catch (err) {
+                        alert("Error parsing the JSON file.");
+                    }
+                };
+
+                reader.readAsText(file);
+            } else {
+                alert("Please upload a valid JSON file.");
+            }
+        });
+    </script>
+</body>
+</html>

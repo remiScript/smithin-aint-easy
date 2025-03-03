@@ -2,30 +2,30 @@ What data are we storing in a DB?
 
 Players
 
-Items
+Items (items.json)
     Name
+    Tier
     Type
-    Tier
-    Purchase Cost
-    Sell Value
-    Atk Pwr
-    Armor
-    Effect
+    Cost
     Image
+    Plus HP
+    Plus Dmg
+    Plus Avoidance
+    Plus ToHit
+    Abilities
     Description
 
 
-Classes
+Hero Classes
     Name
     Tier
+    Requirements
     Image
     Description
-    Prerequisite
 
-Creatures
+Bestiary (Bestiary.json)
     Name
-    Index
-    Tier
+    Tier (Need ranking system for enemies)
     Exp Reward
     Gold Reward
     Image
@@ -33,38 +33,23 @@ Creatures
     Raw Dmg
     Raw Avoidance
     Raw To Hit
-    Weapon
-    Weapon Dmg
-    Weapon Hp
-    Weapon Avoidance
-    Weapon To Hit
-    Armor
-    Armor Dmg
-    Armor Hp
-    Armor Avoidance
-    Armor To Hit
-    Accessory
-    Accessory Dmg
-    Accessory Hp
-    Accessory Avoidance
-    Accessory To Hit
-    Bonus Hp
-    Bonus Dmg
-    Bonus Avoidance
-    Bonus To Hit
-    Total Hp
-    Total Dmg
-    Total Avoidance
-    Total To Hit
+    Default Weapon
+    Default Armor
+    Default Accessory
     Type
+    Hero Class y/n
     Ability
     Description
 
-Abilities
+Abilities (Abilities.json)
     Name
+    Type
+    Image
     Description
     Function
 
-Status Effects
-    Poison
+Messages (Messages.json)
+    Heading
+    Body Copy
+    Images
 

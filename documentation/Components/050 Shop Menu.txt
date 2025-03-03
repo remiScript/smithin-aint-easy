@@ -1,0 +1,11 @@
+The Shop (2 item grids here, (101 Item Grid.txt) )
+    Shop Heading
+
+    Player's item grid | Shopkeep's item grid
+    __________________________________
+    | [] [] ___ |     [] [] []
+    | [] [] | | |     [] [] []
+    | [] [] --- |     [] [] []
+        Card ^
+      |ConfirmBtn|
+    ----------------------------------

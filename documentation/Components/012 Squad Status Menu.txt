@@ -1,0 +1,32 @@
+Heading/Container
+    Squad Description
+        Roster Browser
+            Unit #1 portrait
+            Unit #2 portrait
+            Unit #3 portrait
+            Etc...
+        Selected Unit Card/Window
+            - on mouseover, or tap, get stats breakdown
+                HP:35 (Unit Hp: 20 + Gear: 10 + Upgrades: 5)
+            Unit Name
+            Unit Number (out of squad total)
+            Unit Image (stack one for each unit)
+            Enemies Slain
+            HP
+            Skill (if they have one)
+            Atk Pwr
+            Class
+            Class description
+            Weapon
+            Armor
+            Accessory
+            Upgrades
+                +hp
+                +dmg
+    Squad Actions
+        Upgrade section (greyed out if unavailable, glowing if there is one)
+            Sword Icon: Dmg +1
+            Heart Icon:  HP +5 
+                Confirm btn
+        Sell Unit
+            Confirm Btn

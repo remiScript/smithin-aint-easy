@@ -1,0 +1,12 @@
+Classes Heading
+Item Grid (101 Item Grid.txt)
+    Data pulled from Bestiary (Classes are also on the encounter list)
+    __________________
+    | [] [] [] [] ___ |
+    | [] [] [] [] | | |
+    | [] [] [] [] --- |
+    |         Card ^  |
+    ------------------
+
+    NEED:
+        A way to list pre-reqs for upgrading to a class.

@@ -1,0 +1,13 @@
+This might be a popup, or might go into the context window.
+
+Use this for choices that have more information, like choosing a mission, and showing the stats of the two different monsters/enemy squads
+
+It could be a popup with smaller choices, like picking between upgrades, or loot
+
+Heading
+Choice 1 Btn
+    Choice 1 Img
+    Choice 1 Label
+Choice 2 Btn
+    Choice 2 Img
+    Choice 2 Label

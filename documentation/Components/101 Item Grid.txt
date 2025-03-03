@@ -1,0 +1,19 @@
+This is a multi instance component that should appear in:
+    Inventory
+    Shop
+    Bestiary
+Depending on where it's called, it'll iterate through an array of items, outputting each of them in a grid.
+    When opening the shop, it'll pull a list of items for sale
+    If the player clicks "Sell Items", it'll open the player's inventory, with a sell option
+On select/mouseover, item card appears
+
+Ex: The Shop (so, 2 grids here)
+
+Player's item grid | Shopkeep's item grid
+__________________________________
+| [] [] ___ |     [] [] []
+| [] [] | | |     [] [] []
+| [] [] --- |     [] [] []
+    Card ^
+  |ConfirmBtn|
+----------------------------------

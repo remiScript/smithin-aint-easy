@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File List to Spreadsheet</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+      color: #ffffff;
+    }
+
+    input[type="file"] {
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #1e1e1e;
+      color: #ffffff;
+      border: 1px solid #333333;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    input[type="file"]::-webkit-file-upload-button {
+      visibility: hidden;
+    }
+
+    input[type="file"]:hover {
+      border-color: #444444;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: #0078d7;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #005bb5;
+    }
+
+    button:active {
+      background-color: #003e82;
+    }
+
+    button:disabled {
+      background-color: #333333;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h1>File List to Spreadsheet</h1>
+  <input type="file" webkitdirectory directory multiple id="fileInput" />
+  <button id="generateExcel">Generate Excel</button>
+  <script>
+    document.getElementById("generateExcel").addEventListener("click", () => {
+      const fileInput = document.getElementById("fileInput");
+      if (!fileInput.files.length) return alert("No files selected!");
+
+      // Helper function to convert a string to title case
+      const toTitleCase = (str) => 
+        str
+          .toLowerCase()
+          .replace(/\b\w/g, char => char.toUpperCase());
+
+      // Extract filenames, trim extensions, and convert to title case
+      const fileNames = Array.from(fileInput.files).map(file => 
+        toTitleCase(file.name.replace(/\.[^/.]+$/, "")) // Remove file extension and apply title case
+      );
+
+      const data = [["Filenames"], ...fileNames.map(name => [name])];
+      const worksheet = XLSX.utils.aoa_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Files");
+
+      XLSX.writeFile(workbook, "file_list.xlsx");
+    });
+  </script>
+</body>
+</html>

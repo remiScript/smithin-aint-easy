@@ -1,0 +1,5 @@
+Victory or loss screen
+Experience/Gold earned
+Items found
+Units lost
+Enemies Slain, added to bestiary, etc.

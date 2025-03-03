@@ -1,0 +1,5 @@
+In-game component with instructions, rules, etc.
+
+This goes into the context window.
+
+This will probably mirror the (How to play.txt) file. Once that is done, maybe somehow point this component at that file, so they sync up.

@@ -250,6 +250,7 @@ class Player {
 let player1 = new Player()
 
 // ------------------- UNITS ------------------------//
+
 class Unit {
     constructor(name, weapon, armor, accessory, hp, dmg, avoidance, toHit, loot){
         this.name = name, 
@@ -655,3 +656,5 @@ function attack(attackingUnit, defendingArmy){
 console.log(welcomeMsg);
 callTheSquad(defaultSquad);
 promptUserToUpgrade(defaultSquad.units);
+
+

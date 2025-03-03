@@ -1,0 +1,12 @@
+Bestiary Heading
+Item Grid (101 Item Grid.txt)
+    Data pulled from Bestiary
+    __________________
+    | [] [] [] [] ___ |
+    | [] [] [] [] | | |
+    | [] [] [] [] --- |
+    |         Card ^  |
+    ------------------
+    Enemies you've slain this game are greyed out/crossed out
+    Enemies you've seen from previous games (saved to your account) are revealed
+    Other enemies are occluded with a ???

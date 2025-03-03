@@ -1,0 +1,2 @@
+Gold Icon (img)
+Gold Qty (num, variable, from current game session)

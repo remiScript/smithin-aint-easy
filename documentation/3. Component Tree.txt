@@ -1,79 +1,165 @@
-Splash Screen
+    Title Screen (000 Title Screen.txt)
 
-    Logo
-    Elevator pitch/icebreaker description blurb
-        Welcome to Smithin Ain't Easy! 
-        Smithin Ain't Easy is a game where you're a blacksmith...
-
+        Logo (img)
+        Elevator pitch/icebreaker description blurb (Text bubble/window/card)
+            Welcome to Smithin Ain't Easy! 
+            Smithin Ain't Easy is a game where you're a blacksmith...
+    
     Start New Game Button
-        Game UI
-            How to play blurb (pop up)
-                Each new game is X waves
-                Every Y waves you get to pick another upgrade
-                Etc.
-                Ok Button
-                    Choose your first upgrade menu (popup)
-                        Squad Description
-                        Upgrade 1 (clicking or mouseover changes the stats on the squad description, highlighting the changes)
-                        Upgrade 2 (clicking or mouseover changes the stats on the squad description, highlighting the changes)
-                        Confirm btn
-            Player Menu
-                Player Icon (img)
-                Username (txt)
-                Gold (num)
-                Wave Label (txt)
-                Actual Wave (num)
-                Shop Btn
-                ? Btn
-                Rankings Btn (leaderboards)
-                Inventory Btn
-                Bestiary Btn
-                    Bestiary Menu
-                        Salamander Btn
-                            Salamander (Monster Card)
-                        Knight Btn
-                            Knight (Monster Card)
-                        Mech Fairy Btn
-                            Mech Fairy (Monster Card)
-                        Mech Squire Btn
-                            Mech Squire (Monster Card)
-                        Mech Dreadnaught Btn
-                            Mech Dreadnaught (Monster Card)
-                Classes Btn
-            Squad Card
-                Squad Description
-                    Unit Image (stack one for each unit)
-                    Class
-                    Number of units
-                    HP
-                    Atk Pwr
-                    Upgrades
-                Squad Actions
-                    Upgrade (grey if unavailable, glowing if there is one)
-                        Choose your upgrade menu (popup)
+        Game UI (001 Game UI.txt)
+
+            Player UI(004 Player UI.txt)
+
+                Player Status (005 Player Status.txt)
+                    Player Icon (img, imported data from User's account object)
+                    Username (txt, imported data from User's account object)
+                    Gold ( 071 Gold Indicator.txt)
+                        Gold Icon (img)
+                        Gold Qty (num, variable, from current game session)
+                    Wave Label (txt)
+                    Actual Wave (num, variable, from current game session)
+
+                Player Functions (006 Player Functions.txt)
+
+                    Shop (Btn, from playerFunctions array)
+                        Opens Shop (050 Shop Menu.txt)
+                            Shop Heading
+                            2 item grids here (101 Item Grid.txt)
+                            Player's item grid | Shopkeep's item grid
+                            __________________________________
+                            | [] [] ___ |     [] [] []
+                            | [] [] | | |     [] [] []
+                            | [] [] --- |     [] [] []
+                                Card ^
+                            |ConfirmBtn|
+                            ----------------------------------
+
+                    Quests (Btn, from playerFunctions array)
+                        Opens Quest Menu (051 Quest Menu.txt)
+                            Wave 1: Dragons - Slain! (these generate from prior wins)
+                                Combat Replay Btn (Opens (060 Combat Theater.txt) )
+                                Combat Results Btn (Opens (061 Combat Results.txt) )
+                            Wave 2: Wizards - Slain!
+                                (same buttons as Wave 1)
+                            Wave 3: Giants - Slain!
+                                (same buttons as Wave 1)
+                            Wave 4: ?????? (current wave, highlighted)
+                            Next quest btn
+                                Opens Choice Menu (Monster A or B, 100 Choice Menu.txt)
+                                    For each choice, supply the monster card on button hover/select
+                                    Confirm Button
+                                        Starts next encounter ((060 Combat Theater.txt), via the context window)
+
+                    Rankings (Btn, from playerFunctions array)
+                        Opens Leaderboards Menu (002 Leaderboards.txt)
+
+                    Inventory (Btn, from playerFunctions array)
+                        Opens Inventory Menu (052 Inventory Menu.txt)
+                            Inventory Heading
+                            Item Grid (101 Item Grid.txt)
+                                Data pulled from player's inventory
+                                _____________
+                                | [] [] ___ |
+                                | [] [] | | |
+                                | [] [] --- |
+                                |   Card ^  |
+                                -------------                                
+                            Sell btn (only appears if inventory is opened from (050 Shop Menu.txt) )
+
+                    Bestiary (Btn, from playerFunctions array)
+                        Opens Bestiary Menu (053 Bestiary Menu.txt)
+                            Bestiary Heading
+                                Item Grid (101 Item Grid.txt)
+                                    Data pulled from Bestiary
+                                    __________________
+                                    | [] [] [] [] ___ |
+                                    | [] [] [] [] | | |
+                                    | [] [] [] [] --- |
+                                    |         Card ^  |
+                                    ------------------
+                                    Enemies you've slain this game are greyed out/crossed out
+                                    Enemies you've seen from previous games (saved to your account) are revealed
+                                    Other enemies are occluded with a ???
+
+                    Classes (Btn, from playerFunctions array)
+                        Opens Class Menu (054 Classes Menu.txt)
+
+            Squad at a glance Menu (010 Squad at a glance Menu.txt)
+                Unit #1 Quickstats (011 Quickstats.txt)
+                    Image
+                    Name
+                    HP Bar
+                    DMG
+                    Avoidance
+                    ToHit
+                Unit #2 Quickstats (same)
+                Unit #3 Quickstats (same)
+                etc...
+                Open Squad Status Menu (btn)
+                    Opens (012 Squad Status Menu.txt)
+                            Squad Description
+                                Roster Browser
+                                    Unit #1 portrait
+                                    Unit #2 portrait
+                                    Unit #3 portrait
+                                    Etc...
+                                Selected Unit Card/Window
+                                    - on mouseover, or tap, get stats breakdown
+                                        HP:35 (Unit Hp: 20 + Gear: 10 + Upgrades: 5)
+                                    Unit Name
+                                    Unit Number (out of squad total)
+                                    Unit Image (stack one for each unit)
+                                    Enemies Slain
+                                    HP
+                                    Skill (if they have one)
+                                    Atk Pwr
+                                    Class
+                                    Class description
+                                    Weapon
+                                    Armor
+                                    Accessory
+                                    Upgrades
+                                        +hp
+                                        +dmg
+                            Squad Actions
+                                Upgrade section (greyed out if unavailable, glowing if there is one)
+                                    Sword Icon: Dmg +1
+                                    Heart Icon:  HP +5 
+                                        Confirm btn
+                                Sell Unit
+                                    Confirm Btn
+            
+            Context Window (contains one at a time:)
+                How to play blurb (  (091 How To Play.txt) pop up, 1st time )
+                    Each new game is X waves
+                    Every Y waves you get to pick another upgrade
+                    Etc.
+                    Ok Button
+                        Choose your first upgrade menu (popup)
                             Squad Description
                             Upgrade 1 (clicking or mouseover changes the stats on the squad description, highlighting the changes)
                             Upgrade 2 (clicking or mouseover changes the stats on the squad description, highlighting the changes)
                             Confirm btn
-                    Next Mission
-                        Choose Mission Menu
-                            Mission A Monster Description
-                            Mission B Monster Description
-                            Confirm btn
-                                Mission Results Menu
-                                    Squad Description vs Monster Description Card
-                                    Animated combat log (animated line by line, makes it exciting)
-                                    Success/failure Card
-                                        How many soldiers lost
-                                        Gold earned
-            Combat Log
-                Combat data
-                Last Mission Recap (shows last mission, animated, line by line, with success/fail screen at end)
-            Options Menu
-                How to play button
+                Shop (050 Shop Menu.txt)
+                Quest Menu (051 Quest Menu.txt)
+                Leaderboards Menu (002 Leaderboards.txt)
+                Inventory Menu (052 Inventory Menu.txt)
+                Opens Bestiary Menu (053 Bestiary Menu.txt)
+                *WIP*Opens Class Menu (054 Classes Menu.txt)
+                Combat Theater (060 Combat Theater.txt)
+                Combat Results (061 Combat Results.txt)
+
+            Options Menu (007 Options Menu.txt)
+                Settings?
+                    Accessibility
+                    Account Info
+                Help
+                    How to play button
                 End game button
-                Theme/color/visual change button (F)
+                Theme/color/visual change button (Feature)
 
     Leaderboards Button
+        Leaderboards UI(002 Leaderboards.txt)
 
     Create Account Button
+        Create Account Form (003 Create Account.txt)

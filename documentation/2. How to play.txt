@@ -1,19 +1,79 @@
-COMBAT:
+TABLE OF CONTENTS:
+    a.) Intro/Game Description
+    b.) Gameplay Loop
+    c.) Combat
+    d.) Hero Classes
+
+
+
+Introduction/Game Description: 
+    Smithin Ain't Easy is a game where you play as a blacksmith, and make choices on what to outfit your soldiers with, as they go on missions/quests, and bring back loot for you to make more things.
+
+Gameplay Loop:
+    Login or play as guest
+        If login:
+            Connect to db and get user data
+        If guest:
+            Create session user (even guests get to rank)
+
+    Start game
+        (Data) Default squad is created, squires
+        Game UI appears:
+            Main Menu, Squad Status, Options
+                Context window has welcome screen, gives directions
+
+        1st action
+            Quest Icon Highlights, signaling players to click on it
+                Quest Menu Opens
+                    1st quest highlights
+                        Player chooses
+                            Monster A
+                            Monster B
+                        See Results
+                            Choose Reward - what to haul back?
+                                Loot - enemy weapons/gear (more powerful, but don't count towards any class requirements)
+                                Gold (to be spent towards class upgrade requirements)
+                            Back to main UI
+        Back after 1st mission
+            Buy from shop
+                Hire new troops (maybe hire non troops?)
+                Buy Weapon/Armor/etc.
+
+            Choose Class
+                See list of classes
+                    Required items list
+                    Confirm upgrade (if you meet criteria)
+            Check Bestiary
+                All Enemies are ?s
+                    If you're logged in, you can see greyed out descrptions of enemies you've defeated in past games
+                Defeated enemies are listed
+            ?Turn in sidequests?
+                Fill out bestiary, in parts (ex: defeat all humanoids)
+            Go On Next Quest
+            Repeat
+
+        Game ends when player has no squad, and not enough money to buy troops
+            Final Results are shown
+
+Combat:
     Combat is done in rounds. There are no actions for players to take during combat, it resolves itself.
     All of the strategy comes from choosing upgrades wisely.
+    By the start of combat, you're just watching whatever you sent into motion, success or failure.
     
     Example round:
         Game checks for firstStrike, all soldiers/creatures with first strike go before anyone without. If both player and monster have it, player goes first. 
 
         Squad of 6 soldiers (with bows) fight 20 goblins. One at a time, each soldier gets one shot at a goblin. If they miss, the next soldier goes and shoots the same goblin. Then, each goblin gets a chance to hit a soldier. This goes back and forth until one side is defeated. 
 
+Hero Classes:
+    Your squad members all start as squires, but after obtaining certain equipment, players can upgrade their squad to a hero class.
+        Ex: Soldier/Paladin/Assassin
+    
+    Each Hero class comes with a unique perk.
+        Ex: Paladins heal each turn, Archers can attack twice on first turn if they slay an enemy, etc.
 
-BASIC GAMEPLAY LOOP:
-Start game
-    Choose Upgrades
-        Go On Mission
-            See Results
-                Buy from shop/Choose Class/Check Bestiary
-                    Go On Mission (return to)
-                        Game ends when player has no squad, and not enough money to buy troops
-                            Final Results are shown
+    Upgrading requires a unit to have certain equipment.
+        Ex: Soldier requires Chain Armor and Shield.
+
+    Having the required items equipped simply unlocks the class, the items are not consumed. 
+    Upgrades are permanent, and individual per unit. You may want to upgrade your units into different hero classes to become more effective on the battlefield. 

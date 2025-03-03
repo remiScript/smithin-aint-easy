@@ -1,0 +1,21 @@
+[
+    {
+        "name": "Welcome Message",
+        "heading": "Welcome to Smithin' Ain't Easy!",
+        "bodyCopy": "Smithin Ain't Easy is a game where you play as a blacksmith, and make choices on what to outfit your soldiers with, as they go on missions/quests, and bring back loot for you to make more things.",
+        "images": ""
+    }, 
+    {
+        "name": "Account Perks",
+        "heading": "Don't have an account? Join us!",
+        "bodyCopy": "Smithin' Ain't Easy has greater depth if you have an account. Unlike baby games that reward you for having an account, we add more layers of gameplay instead! With an account, your bestiary will carry over, allowing for meta quests about monster hunting. Items you smith will be added to the shop, so you won't need good RNG to find them in future games. You might even find new surprises after a few runs...",
+        "images": ""
+
+    },
+    {
+        "name": "Tutorial 1",
+        "heading": "This game has tutorials!",
+        "bodyCopy": "Blahblahblah...",
+        "images": ""
+    }
+]

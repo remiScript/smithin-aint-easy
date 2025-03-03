@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Key Converter</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; white-space: pre-wrap; }
+        button { margin-top: 10px; padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h2>Upload a JSON File</h2>
+    <input type="file" id="fileInput" accept=".json">
+    <button onclick="downloadJson()">Download JSON</button>
+    
+    <h2>Converted JSON</h2>
+    <pre id="output">Upload a file to see results...</pre>
+
+    <script>
+        let convertedData = null;
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const jsonData = JSON.parse(e.target.result);
+                    convertedData = Array.isArray(jsonData) ? jsonData.map(convertKeysToCamelCase) : convertKeysToCamelCase(jsonData);
+                    document.getElementById('output').textContent = JSON.stringify(convertedData, null, 2);
+                } catch (error) {
+                    document.getElementById('output').textContent = "Error: Invalid JSON file.";
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        function toCamelCase(str) {
+            return str.replace(/(?:^\w|[A-Z]|\b\w)/g, (word, index) =>
+                index === 0 ? word.toLowerCase() : word.toUpperCase()
+            ).replace(/\s+/g, '');
+        }
+
+        function convertKeysToCamelCase(obj) {
+            return Object.fromEntries(
+                Object.entries(obj).map(([key, value]) => [toCamelCase(key), value])
+            );
+        }
+
+        function downloadJson() {
+            if (!convertedData) {
+                alert("No JSON data to download. Upload a file first!");
+                return;
+            }
+
+            const blob = new Blob([JSON.stringify(convertedData, null, 2)], { type: "application/json" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "converted.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+
+</body>
+</html>

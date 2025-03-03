@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV to JSON Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    input[type="file"] {
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #1e1e1e;
+      color: #ffffff;
+      border: 1px solid #333333;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    pre {
+      background-color: #1e1e1e;
+      color: #00ff00;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+      max-height: 300px;
+      width: 80%;
+      margin-top: 20px;
+    }
+
+    table {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 80%;
+      background-color: #1e1e1e;
+    }
+
+    th, td {
+      border: 1px solid #444444;
+      padding: 10px;
+      text-align: left;
+      color: #ffffff;
+    }
+
+    th {
+      background-color: #333333;
+    }
+
+    td {
+      color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <h1>CSV to JSON Converter</h1>
+  <input type="file" id="csvInput" accept=".csv" />
+  <pre id="output"></pre>
+  <table id="jsonTable"></table>
+
+  <script>
+    document.getElementById('csvInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) {
+        alert("No file selected!");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const csv = e.target.result;
+        const json = csvToJson(csv);
+        document.getElementById('output').textContent = JSON.stringify(json, null, 2);
+        displayJsonTable(json);
+      };
+      reader.readAsText(file);
+    });
+
+    // Function to convert CSV text to JSON
+    function csvToJson(csv) {
+      const lines = csv.split("\n").filter(line => line.trim()); // Split rows and filter out empty lines
+      const headers = lines[0].split(",").map(header => header.trim()); // Extract and clean headers
+      const json = lines.slice(1).map(line => {
+        const values = line.split(",").map(value => value.trim()); // Extract and clean values
+        return headers.reduce((obj, header, index) => {
+          const rawValue = values[index] || ""; // Get the value
+          // Convert to number if it's a valid integer, otherwise keep it as string
+          obj[header] = isNaN(rawValue) || rawValue === "" ? rawValue : parseInt(rawValue, 10);
+          return obj;
+        }, {});
+      });
+      return json;
+    }
+
+    // Function to display JSON as an HTML table
+    function displayJsonTable(json) {
+      const table = document.getElementById('jsonTable');
+      table.innerHTML = ""; // Clear any existing content
+
+      if (json.length === 0) return;
+
+      // Create table headers
+      const headers = Object.keys(json[0]);
+      const headerRow = document.createElement('tr');
+      headers.forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+      });
+      table.appendChild(headerRow);
+
+      // Create table rows
+      json.forEach(row => {
+        const tableRow = document.createElement('tr');
+        headers.forEach(header => {
+          const td = document.createElement('td');
+          td.textContent = row[header];
+          tableRow.appendChild(td);
+        });
+        table.appendChild(tableRow);
+      });
+    }
+  </script>
+</body>
+</html>
+
+

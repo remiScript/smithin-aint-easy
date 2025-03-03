@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #jsonDisplay {
+            width: 100%;
+            height: 300px;
+            margin-top: 10px;
+            padding: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            border: 1px solid #ccc;
+            overflow-y: scroll;
+        }
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>JSON Editor Tool</h1>
+    <p>Upload a JSON file, and this tool will add an "index" key to each object, starting at 0.</p>
+    <input type="file" id="fileInput" accept=".json" />
+    <button id="downloadBtn" style="display: none;">Download Updated JSON</button>
+    <div id="jsonDisplay"></div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const jsonDisplay = document.getElementById('jsonDisplay');
+        const downloadBtn = document.getElementById('downloadBtn');
+        let updatedJson = null;
+
+        fileInput.addEventListener('change', handleFileUpload);
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const jsonData = JSON.parse(e.target.result);
+                        if (Array.isArray(jsonData)) {
+                            updatedJson = addIndexToObjects(jsonData);
+                            jsonDisplay.textContent = JSON.stringify(updatedJson, null, 4);
+                            downloadBtn.style.display = 'inline-block';
+                        } else {
+                            jsonDisplay.textContent = 'Error: JSON file must contain an array of objects.';
+                        }
+                    } catch (error) {
+                        jsonDisplay.textContent = 'Error parsing JSON: ' + error.message;
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function addIndexToObjects(jsonArray) {
+            return jsonArray.map((obj, index) => {
+                return { index, ...obj };
+            });
+        }
+
+        downloadBtn.addEventListener('click', () => {
+            if (updatedJson) {
+                const blob = new Blob([JSON.stringify(updatedJson, null, 4)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'updated.json';
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        });
+    </script>
+</body>
+</html>
