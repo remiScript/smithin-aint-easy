@@ -364,8 +364,37 @@ function accessClasses(cls, psd){
 
 }
 
-function accessSquad(){
+function accessSquad(psd){
+  //This menu should show each of your units
+  //This is also where we equip the units with items
+  //should have something that points to classes menu
+  //this will connect with the inventory
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  // HERE -------------------------------------------------------------------------
+  let sqd = psd.squad;
   console.log('Squad Menu:')
+  console.table(sqd);
+  sqd.forEach(unit => {
+    console.log(`${unit.displayStats()}`)
+  });
+
+  
 }
 
 function accessOptions(){
@@ -403,27 +432,27 @@ function displayMessage(messageName) {
 //This will also be what creates enemy groups for quests
 class Unit {
     constructor(createdUnit){
-        this.name = createdUnit["Name"], 
-        this.image = createdUnit["Image"], 
+        this.name = createdUnit["name"], 
+        this.image = createdUnit["image"], 
 
-        this.rawHp = createdUnit["Raw HP"], 
+        this.rawHp = createdUnit["rawHP"], 
         this.bonusHp = 0, 
         this.currentHp = this.maxHp;
 
-        this.weapon = createdUnit["Default Weapon"], 
-        this.armor = createdUnit["Default Armor"], 
-        this.accessory = createdUnit["Default Accessory"], 
+        this.weapon = createdUnit["defaultWeapon"], 
+        this.armor = createdUnit["defaultArmor"], 
+        this.accessory = createdUnit["defaultAccessory"], 
 
-        this.dmg = createdUnit["Raw Dmg"], 
+        this.dmg = createdUnit["rawDmg"], 
         this.bonusDmg = 0, 
 
-        this.avoidance = createdUnit["Raw Avoidance"], 
+        this.avoidance = createdUnit["rawAvoidance"], 
         this.bonusAvoidance = 0, 
 
-        this.toHit = createdUnit["Raw ToHit"],
+        this.toHit = createdUnit["rawToHit"],
         this.bonusToHit = 0,
         
-        this.goldReward = createdUnit["Gold Reward"]
+        this.goldReward = createdUnit["goldReward"]
     }
 
     get maxHp() {
@@ -449,6 +478,11 @@ class Unit {
     displayStats(){
       console.log(`${this.name}'s Stats:`)
       console.log(`HP: ${this.currentHp}/${this.maxHp}`)
+      console.log(`Weapon: ${this.weapon}`)
+      console.log(`Armor: ${this.armor}`)
+      console.log(`Accessory: ${this.accessory}`)
+      console.log(`-----------------------------`)
+      return
     }
 
     // upgradeUnit(x){
@@ -471,7 +505,8 @@ function createSquad(...args) {
   let i = 0;
 
   while (i < args.length) {
-      const newUnit = args[i];
+      let newUnit = args[i];
+      newUnit = new Unit(args[i]);
 
       // Check if the argument is a string (indicating a unit type)
       if (typeof newUnit.name === 'string') {
@@ -577,7 +612,7 @@ function askPlayerWhatsNext(playerSessionData) {
       accessClasses(heroClasses, playerSessionData);
       break;
     case '8':
-      accessSquad();
+      accessSquad(playerSessionData);
       break;
     case '9':
       accessOptions();
