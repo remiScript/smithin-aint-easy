@@ -450,43 +450,73 @@ function displayMessage(messageName) {
 //This will also be what creates enemy groups for quests
 class Unit {
     constructor(createdUnit){
+
         this.name = createdUnit["name"], 
+        this.goldReward = createdUnit["goldReward"], 
         this.image = createdUnit["image"], 
 
         this.rawHp = createdUnit["rawHP"], 
-        this.bonusHp = Math.random(), 
-        this.currentHp = this.maxHp;
+        this.bonusHpFromWeapon = 0;
+        this.bonusHpFromArmor = 0;
+        this.bonusHpFromAccessory = 0;
+        this.bonusHpFromEffect = 0, 
+        this.maxHp = this.calcMaxHp;
+
+        this.rawDmg = createdUnit["rawDmg"], 
+        this.bonusDmgFromWeapon = 0, 
+        this.bonusAvoidanceFromArmor = 0,
+        this.bonusDmgFromAccessory = 0,
+        this.bonusDmgFromEffect = 0, 
+        this.totalDmg = this.calcTotalDmg,
+        // Here -------------------------------------------------------------------------------------------------
+        // Here -------------------------------------------------------------------------------------------------
+        // Here -------------------------------------------------------------------------------------------------
+        // Here -------------------------------------------------------------------------------------------------
+        // Here -------------------------------------------------------------------------------------------------
+        // Here -------------------------------------------------------------------------------------------------
+        // Here -------------------------------------------------------------------------------------------------
+        // Here -------------------------------------------------------------------------------------------------
+        // Here -------------------------------------------------------------------------------------------------
+        // Here -------------------------------------------------------------------------------------------------
+        // Here -------------------------------------------------------------------------------------------------
+        // Here -------------------------------------------------------------------------------------------------
+        // Here -------------------------------------------------------------------------------------------------
+
+
+
+        this.rawAvoidance = createdUnit["rawAvoidance"], 
+        this.bonusAvoidanceFromWeapon = 0, 
+        this.bonusAvoidanceFromArmor = 0, 
+        this.bonusAvoidanceFromAccessory = 0, 
+        this.bonusAvoidanceFromEffect = 0, 
+        this.totalAvoidance = this.calcTotalAvoidance,
+
+        this.toHit = createdUnit["rawToHit"],
+        this.bonusToHitFromWeapon = 0,
+        this.bonusToHitFromArmor = 0,
+        this.bonusToHitFromAccessory = 0,
+        this.bonusToHitFromEffect = 0,
+        this.totalToHit = this.calcTotalToHit,
 
         this.weapon = createdUnit["defaultWeapon"], 
         this.armor = createdUnit["defaultArmor"], 
-        this.accessory = createdUnit["defaultAccessory"], 
-
-        this.dmg = createdUnit["rawDmg"], 
-        this.bonusDmg = 0, 
-
-        this.avoidance = createdUnit["rawAvoidance"], 
-        this.bonusAvoidance = 0, 
-
-        this.toHit = createdUnit["rawToHit"],
-        this.bonusToHit = 0,
-        
-        this.goldReward = createdUnit["goldReward"]
+        this.accessory = createdUnit["defaultAccessory"]
     }
 
-    get maxHp() {
-        return this.rawHp + this.bonusHp;
+    get calcMaxHp() {
+        return this.rawHp + this.bonusHpFromWeapon + this.bonusHpFromArmor + this.bonusHpFromAccessory + this.bonusHpFromEffect;
     }
 
-    get totalDmg(){
-        return this.dmg + this.bonusDmg;
+    get calcTotalDmg(){
+        return this.rawDmg + this.bonusDmgFromWeapon + this.bonusDmgFromArmor + this.bonusDmgFromAccessory + this.bonusDmgFromEffect;
     }
 
-    get totalAvoidance(){
-        return this.avoidance + this.bonusAvoidance;
+    get calcTotalAvoidance(){
+        return this.rawAvoidance + this.bonusAvoidanceFromWeapon + this.bonusAvoidanceFromArmor + this.bonusAvoidanceFromAccessory + this.bonusAvoidanceFromEffect;
     }
 
-    get totalToHit(){
-        return this.toHit + this.bonusToHit;
+    get calcTotalToHit(){
+        return this.toHit + this.bonusToHitFromWeapon + this.bonusToHitFromArmor + this.bonusToHitFromAccessory + this.bonusToHitFromEffect;
     }
 
     adjustHp(amt) {
@@ -511,6 +541,10 @@ class Unit {
           if(this.weapon == "None") {
             console.log('if statement')
             this.weapon = item.name;
+            this.bonusHpFromWeapon = item.plusHp;
+            this.bonusDmgFromWeapon = item.plusDmg;
+            this.bonusAvoidanceFromWeapon = item.plusAvoidance;
+            this.bonusToHitFromWeapon = item.plusToHit;
           }
           else {
             console.log('else statement')
@@ -591,26 +625,27 @@ function createSquad(...args) {
   let i = 0;
 
   while (i < args.length) {
-      let newUnit = args[i];
-      newUnit = new Unit(args[i]);
+      // let newUnit = args[i];
+      let unitData = args[i];
 
       // Check if the argument is a string (indicating a unit type)
-      if (typeof newUnit.name === 'string') {
+      if (typeof unitData.name === 'string') {
           const nextArg = args[i + 1];
 
           // Check if the next argument is a number (indicating count)
           if (typeof nextArg === 'number') {
               for (let j = 0; j < nextArg; j++) {
-                  squad.push(newUnit);
+                  squad.push(new Unit(unitData));
               }
               i += 2; // Skip to the next unit type
           } else {
               // Create one instance if no count is provided
-              squad.push(newUnit);
+              squad.push(new Unit(unitData));
               i += 1; // Move to the next argument
           }
-      } else {
-          throw new Error(`Invalid argument at position ${i}: ${newUnit}`);
+      } 
+      else {
+          throw new Error(`Invalid argument at position ${i}: ${unitData}`);
       }
   }
   
