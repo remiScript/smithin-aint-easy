@@ -369,30 +369,48 @@ function accessSquad(psd){
   //This is also where we equip the units with items
   //should have something that points to classes menu
   //this will connect with the inventory
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
-  // HERE -------------------------------------------------------------------------
   let sqd = psd.squad;
+  let inventory = psd.inventory;
   console.log('Squad Menu:')
   console.table(sqd);
-  sqd.forEach(unit => {
-    console.log(`${unit.displayStats()}`)
-  });
+  console.log(`1. Equip item`)
+  console.log(`2. Remove item`)
+  console.log(`3. See squad stats`)
+  let choice = prompt(`What will you do next?`)
+  switch (choice) {
+    case '1':
+      //equip item
+      //pick the unit, then the item
+      //logic for anything that would make it invalid, such as being uneqippable
+      //does the slot need to be empty first? ideally not
+      //it should call the unequip item function if we're swapping items
+      let whoEquip = prompt('Which unit are we equipping?');
+      let whatSlotEquip = prompt('Which slot are we equipping?');
+      inventory.forEach((invItem, index) => {
+        console.log(`${index}. ${invItem.name}`)
+      })
+      let whatItemEquip = prompt('Which item?')
+      sqd[whoEquip].equipItem(whatSlotEquip, inventory[whatItemEquip]);
+      break;
+    case '2':
+      //unequip item
+      console.log(sqd)
+      sqd.forEach((member, index) => {
+        console.log(`${index + 1}. ${member.name}`)
+        console.log(`--> Weapon: ${member.weapon}`)
+        console.log(`--> Armor: ${member.armor}`)
+        console.log(`--> Accessory: ${member.accessory}`)
+      });
+      let choiceUnitUnequip = prompt('Which unit are we unequipping?');
+      let choiceSlotUnequip = prompt('Which slot are we unequipping?');
+      sqd[choiceUnitUnequip].unequipItem(choiceSlotUnequip);
+      break;
+    case '3':
+      sqd.forEach(member => {
+        console.log(`${member.displayStats()}`)
+      });
+      break;
+  }
 
   
 }
@@ -436,7 +454,7 @@ class Unit {
         this.image = createdUnit["image"], 
 
         this.rawHp = createdUnit["rawHP"], 
-        this.bonusHp = 0, 
+        this.bonusHp = Math.random(), 
         this.currentHp = this.maxHp;
 
         this.weapon = createdUnit["defaultWeapon"], 
@@ -482,6 +500,74 @@ class Unit {
       console.log(`Armor: ${this.armor}`)
       console.log(`Accessory: ${this.accessory}`)
       console.log(`-----------------------------`)
+      return
+    }
+    equipItem(slot, item){
+      console.log(`Slot is: ${slot}`);
+      console.log(`Item is: ${item.name}`);
+      switch (slot) {
+        case '1':
+          console.log('case 1')
+          if(this.weapon == "None") {
+            console.log('if statement')
+            this.weapon = item.name;
+          }
+          else {
+            console.log('else statement')
+            this.unequipItem(slot);
+            this.weapon = item.name;
+          }
+          break;
+        case '2':
+          if(this.armor == "None") {
+            this.armor = item.name;
+          }
+          else {
+            this.unequipItem(slot);
+            this.armor = item.name;
+          }
+          break;
+        case '3':
+          if(this.accessory == "None") {
+            this.accessory = item.name;
+          }
+          else {
+            this.unequipItem(slot);
+            this.accessory = item.name;
+          }
+          break;
+      }
+      return
+    }
+    unequipItem(slot){
+      //slot is provided via a prompt in the console version
+      //in the UI version, make sure you supply the argument correctly
+      switch (slot) {
+        case '1':
+          if(this.weapon !== "None") {
+            this.weapon == "None"
+          }
+          else {
+            console.log('No weapon equipped.')
+          }
+          break;
+        case '2':
+          if(this.armor !== "None") {
+            this.armor == "None"
+          }
+          else {
+            console.log('No armor equipped.')
+          }
+          break;
+        case '3':
+          if(this.accessory !== "None") {
+            this.accessory == "None"
+          }
+          else {
+            console.log('No accessory equipped.')
+          }
+          break;
+      }
       return
     }
 
@@ -585,6 +671,7 @@ function newGameSetup(){
 
 // PROMPT PLAYER FOR A CHOICE
 function askPlayerWhatsNext(playerSessionData) {
+  console.log(playerSessionData)
   //a. Store player choice, as we're going to carry out our next action based on the user
   generateConsoleUI();
   let lastOptionChosen = prompt('What will you do next?');
