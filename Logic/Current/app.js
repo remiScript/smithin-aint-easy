@@ -25,6 +25,7 @@ const listOfMonsters = '../../Data/bestiary.json';
 const listOfHeroes = '../../Data/heroClasses.json';
 const listOfItems = '../../Data/items.json';
 const listOfMessages = '../../Data/messages.json';
+const listOfQuests = '../../Data/quests.json';
 
 //We're defining these here because (I think) we want them in the global scope, this may change
 let abilities;
@@ -32,6 +33,7 @@ let bestiary;
 let heroClasses;
 let items;
 let messages;
+let quests;
 
 async function loadData() {
   // This populates all of the json data into objects we can access
@@ -59,6 +61,11 @@ async function loadData() {
       messages = await fetchJSONData(listOfMessages).then((response) => {
         messages = response;
         return messages;
+      });
+
+      quests = await fetchJSONData(listOfQuests).then((response) => {
+        quests = response;
+        return quests;
       });
 }
 //---------------------------------------------------------------------
@@ -103,6 +110,7 @@ let dummyAcct = {
     name: 'DummyName1',
     mostWavesCompleted: 3,
     monstersDefeated: ['Dragon', 'Troll'],
+    questsCompleted: ['Goblin Encampment', 'Danger Dogs'],
     itemsUnlocked: ['Mace', 'Shield'],
     classesUnlocked: ['Squire', 'Paladin']
 }
@@ -117,6 +125,7 @@ let dummyAcct = {
       name = "Guest", 
       mostWavesCompleted = 0, 
       monstersDefeated = [], 
+      questsCompleted = [],
       itemsUnlocked = [], 
       classesUnlocked = [],
     ) {
@@ -124,12 +133,17 @@ let dummyAcct = {
       this.name = name,
       this.mostWavesCompleted = mostWavesCompleted,
       this.monstersDefeated = monstersDefeated,
+      this.questsCompleted = questsCompleted,
       this.itemsUnlocked = itemsUnlocked,
       this.classesUnlocked = classesUnlocked
     }
     
     addItemToInventory(item) {
       this.inventory.push(item);
+      console.log(`${item.name}  was added to inventory!`)
+      this.inventory.forEach(item => {
+        console.log(`${item.name}`)
+      })
     }
     removeItemFromInventory(item){
       const index = this.inventory.indexOf(item);
@@ -166,7 +180,7 @@ function generateShopkeepersWares(items){
 function generateBuybackTable(){
   console.log('Create a function so the player can buy-back stuff they sell.')
 }
-let conclusion = 0;
+//let conclusion = 0;
 
 
 
@@ -181,7 +195,7 @@ function generateConsoleUI() {
   console.log("5. Inventory (WORKING!)")
   console.log("6. Bestiary (WORKING!)")
   console.log("7. Classes (WORKING!)")
-  console.log("8. Squad -WIP")
+  console.log("8. Squad (WORKING!)")
   console.log("9. Options -WIP")
   console.log("10. Console functions")
 }
@@ -286,14 +300,119 @@ function accessShop(psd){
   }
 }
 
-function accessQuests(){
+function accessQuests(psd){
   console.log('Quest Menu:')
   //quest database? quest generator? maybe start with fixed quests, move to randomized ones in the future
-  //quest menu should provide player with next options, a big part of the game is choosing wisely
+  //quest is described, shows enemies that soldiers will face, info is limited and more is revealed as you defeat more of the enemies
+  let questsAvailable = generateQuestTable(psd);
+  console.log(`Quests Available:`)
+  console.log(' ')
+  //GLITCH? After the accessQuests function is run once, if you run it again, the
+  //lists of questsAvailable doesn't print. The function still works, it just doesn't print.
+  questsAvailable.forEach(quest => {
+    console.log(`Quest #${(questsAvailable.indexOf(quest))+1}------------------------`)
+    console.log(`${quest.name}`)
+    console.log(`${quest.flavorText}`)
+    console.log(`-------------------------------------`)
+    console.log(' ')
+  });
+  let choiceQ = prompt(`Choose your next quest!`)
+  let nextQuest = quests[choiceQ-1];
+  console.log(`You've Chosen:`);
+  console.log(`${nextQuest.name}`);
+  console.log(`-------------------------`);
+  let choice = prompt('Should the soldiers bring back gold, or loot? Press 1 for gold.')
+  //How will loot be generated? we have items, and i was sure to include tiers
+
+  //This is where the prep ends, and the soldiers depart. Success or failure will be routed here
+  //Generic truthy value used here until I build combat/theatre
+  if(embarkOnQuest()){
+    //EVERYTHING FROM HERE DOWN ASSUMES THE QUEST IS A SUCCESS
+  //This is because there's no combat or anything yet. Consider making a success/failure button for testing.
+  let reward; 
+  if(choice == '1'){
+    reward = nextQuest.gold
+    psd.gold += reward;
+    console.log(`${reward} gold was added! You now have ${psd.gold} gold!`)
+  } else {
+    reward = generateLootTable(nextQuest)
+    psd.addItemToInventory(reward);
+  }
+  //add the quest to the list of quests the player has completed
+  //flesh this out so it only adds the quest to the list if it's the player's first time
+  //consider having stacked rewards for multiple completions? unlock goblin as a playable class if you complete this quest 10 times?
+  psd.questsCompleted.push(nextQuest.name)
+  console.table(psd);
+
+  //advance the current wave
+  psd.currentWave++;
+  } else {
+    console.log(`-----------------------------------`)
+    console.log(`-----------------------------------`)
+    console.log('EVERYONE DIED')
+    console.log(`-----------------------------------`)
+    console.log(`-----------------------------------`)
+    //GAME OVER STATE
+    gameConclusion = 1;
+    return gameConclusion;
+    //WHERE DO WE GO FROM HERE?
+    //STATS SCREEN (OF YOUR SESSION?)
+    //NEW GAME?
+    
+
+    //COMMIT UPDATED DATA TO PLAYER OBJECT/ACCOUNT
+  }
+
+    
+  //you tell the soldiers what to bring back, loot or gold
+  // a big part of the game is choosing wisely
   //this will send soldiers off to fight, so it'll initiate combat, open the combat theater
   //it will have to read the results of combat, and give the player rewards, depending
   //function for creating quests, defining them
   //part of a quest: name, description, tier, enemies, rewards, completion status
+}
+
+function generateLootTable(quest){
+  //this function will determine the loot reward for a quest
+  //it keeps the rewards from being static and determined in the JSON files
+  //it also lets me change how i determine the rewards
+
+  //for now, rewards will just be 1 item from the pool of items of the same tier
+  //ex: tier 1 quest reward = random tier 1 item
+  let tier = quest.tier;
+  let possibleRewards = [];
+  items.forEach(item => {
+    if(item.tier == tier) {
+      possibleRewards.push(item)
+    }
+  });
+  
+  let selection = Math.ceil(Math.random()*possibleRewards.length)
+
+  return possibleRewards[selection];
+}
+
+function generateQuestTable(playerSessionData){
+  //this function will generate a table of available quests, based on criteria set here
+  //the first version is simple: whatever wave the player is on, we generate a few quests of that wave
+  let tier = playerSessionData.currentWave;
+  let possibleQuests = [];
+  quests.forEach(quest => {
+    if(quest.tier == tier) {
+      possibleQuests.push(quest);
+    }
+  })
+  return possibleQuests
+
+}
+
+function embarkOnQuest(){
+  //this function will:
+  //  Flavor: This is where the soldier leave town, win or lose, the smith can do nothing until they return
+  //  This initiates combat, will open the combat theatre, player will watch, there will be a results screen
+  //  Much of this functionality will be in other functions, but called here
+  //  It will return a success or failure state, each of which will trigger different events
+  return false;
 }
 
 function accessRankings(){
@@ -372,10 +491,11 @@ function accessSquad(psd){
   let sqd = psd.squad;
   let inventory = psd.inventory;
   console.log('Squad Menu:')
-  console.table(sqd);
+  console.log(sqd);
   console.log(`1. Equip item`)
   console.log(`2. Remove item`)
   console.log(`3. See squad stats`)
+  console.log(`4. Check item compatibility`)
   let choice = prompt(`What will you do next?`)
   switch (choice) {
     case '1':
@@ -396,7 +516,7 @@ function accessSquad(psd){
       //unequip item
       console.log(sqd)
       sqd.forEach((member, index) => {
-        console.log(`${index + 1}. ${member.name}`)
+        console.log(`${index}. ${member.name}`)
         console.log(`--> Weapon: ${member.weapon}`)
         console.log(`--> Armor: ${member.armor}`)
         console.log(`--> Accessory: ${member.accessory}`)
@@ -407,12 +527,24 @@ function accessSquad(psd){
       break;
     case '3':
       sqd.forEach(member => {
-        console.log(`${member.displayStats()}`)
+        console.log(`${member.displayMessage()}`)
+        console.log('--------------------------------')
+        console.log('--------------------------------')
+        console.log('--------------------------------')
+        console.log('--------------------------------')
+
       });
       break;
-  }
-
-  
+    case '4':
+      sqd.forEach(member => {
+        console.log(`${member.compatibilityList()}`)
+        console.log('--------------------------------')
+        console.log('--------------------------------')
+        console.log('--------------------------------')
+        console.log('--------------------------------')
+      });
+      break;
+}
 }
 
 function accessOptions(){
@@ -432,18 +564,6 @@ function displayMessage(messageName) {
 }
 //---------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
   
 //UNIT/SQUAD CREATION --------------------------------------------------------------
 //We have the blueprints for the squires over in bestiary.json. We need to write a function that invokes a constructor X times to make Y units.
@@ -456,33 +576,19 @@ class Unit {
         this.image = createdUnit["image"], 
 
         this.rawHp = createdUnit["rawHP"], 
-        this.bonusHpFromWeapon = 0;
-        this.bonusHpFromArmor = 0;
-        this.bonusHpFromAccessory = 0;
+        this.bonusHpFromWeapon = 0,
+        this.bonusHpFromArmor = 0,
+        this.bonusHpFromAccessory = 0,
         this.bonusHpFromEffect = 0, 
-        this.maxHp = this.calcMaxHp;
+        this.maxHp = this.calcMaxHp,
+        this.currentHp = this.maxHp,
 
         this.rawDmg = createdUnit["rawDmg"], 
         this.bonusDmgFromWeapon = 0, 
-        this.bonusAvoidanceFromArmor = 0,
+        this.bonusDmgFromArmor = 0,
         this.bonusDmgFromAccessory = 0,
         this.bonusDmgFromEffect = 0, 
         this.totalDmg = this.calcTotalDmg,
-        // Here -------------------------------------------------------------------------------------------------
-        // Here -------------------------------------------------------------------------------------------------
-        // Here -------------------------------------------------------------------------------------------------
-        // Here -------------------------------------------------------------------------------------------------
-        // Here -------------------------------------------------------------------------------------------------
-        // Here -------------------------------------------------------------------------------------------------
-        // Here -------------------------------------------------------------------------------------------------
-        // Here -------------------------------------------------------------------------------------------------
-        // Here -------------------------------------------------------------------------------------------------
-        // Here -------------------------------------------------------------------------------------------------
-        // Here -------------------------------------------------------------------------------------------------
-        // Here -------------------------------------------------------------------------------------------------
-        // Here -------------------------------------------------------------------------------------------------
-
-
 
         this.rawAvoidance = createdUnit["rawAvoidance"], 
         this.bonusAvoidanceFromWeapon = 0, 
@@ -504,7 +610,7 @@ class Unit {
     }
 
     get calcMaxHp() {
-        return this.rawHp + this.bonusHpFromWeapon + this.bonusHpFromArmor + this.bonusHpFromAccessory + this.bonusHpFromEffect;
+      return this.rawHp + this.bonusHpFromWeapon + this.bonusHpFromArmor + this.bonusHpFromAccessory + this.bonusHpFromEffect;
     }
 
     get calcTotalDmg(){
@@ -519,8 +625,45 @@ class Unit {
         return this.toHit + this.bonusToHitFromWeapon + this.bonusToHitFromArmor + this.bonusToHitFromAccessory + this.bonusToHitFromEffect;
     }
 
+    attributeModifier(slot, item){
+      console.log('running attribute modifier')
+      //slot is weapon/armor/accessory/effect (buff/debuff, working on that)
+      //this is how we dynamically connect to the right stats
+      //we can refer to keys with arguments, but not partial keys
+      //so, we have to make our own
+      let bonusHpFromSlot = `bonusHpFrom${slot.charAt(0).toUpperCase() + slot.slice(1)}`
+      let bonusDmgFromSlot = `bonusDmgFrom${slot.charAt(0).toUpperCase() + slot.slice(1)}`
+      let bonusAvoidanceFromSlot = `bonusAvoidanceFrom${slot.charAt(0).toUpperCase() + slot.slice(1)}`
+      let bonusToHitFromSlot = `bonusToHitFrom${slot.charAt(0).toUpperCase() + slot.slice(1)}`
+
+      if(!item){
+        this[slot] = "None";      
+        this[bonusHpFromSlot] = 0;
+        this[bonusDmgFromSlot] = 0;
+        this[bonusAvoidanceFromSlot] = 0;
+        this[bonusToHitFromSlot] = 0;
+      } 
+      else {
+      this[slot] = item.name;
+      this[bonusHpFromSlot] = item.plusHP;
+      this[bonusDmgFromSlot] = item.plusDmg;
+      this[bonusAvoidanceFromSlot] = item.plusAvoidance;
+      this[bonusToHitFromSlot] = item.plusToHit;
+      }
+      this.maxHp = this.calcMaxHp;
+      this.totalDmg = this.calcTotalDmg;
+      this.totalAvoidance = this.calcTotalAvoidance;
+      this.totalToHit = this.calcTotalToHit;
+    }
+
     adjustHp(amt) {
-      this.currentHp = Math.max(0, Math.min(this.maxHp, this.currentHp + amt))
+      //the first arg in the math.min bit keeps us from overhealing
+      //say the amt is 5, and our currentHp is 8, maxHp is 10
+      //that totals 13, which is over the max, so we set currentHp to 10
+      //and that whole thing is houses in the math.max part, which sets currentHp to zero if we have negative health
+      this.currentHp = Math.max(0, Math.min(this.maxHp, this.currentHp + amt));
+      console.log(`HP: ${this.currentHp}/${this.maxHp}`)
+      return this.currentHp;
     }
 
     displayStats(){
@@ -532,54 +675,83 @@ class Unit {
       console.log(`-----------------------------`)
       return
     }
-    equipItem(slot, item){
-      console.log(`Slot is: ${slot}`);
-      console.log(`Item is: ${item.name}`);
-      switch (slot) {
-        case '1':
-          console.log('case 1')
-          if(this.weapon == "None") {
-            console.log('if statement')
-            this.weapon = item.name;
-            this.bonusHpFromWeapon = item.plusHp;
-            this.bonusDmgFromWeapon = item.plusDmg;
-            this.bonusAvoidanceFromWeapon = item.plusAvoidance;
-            this.bonusToHitFromWeapon = item.plusToHit;
-          }
-          else {
-            console.log('else statement')
-            this.unequipItem(slot);
-            this.weapon = item.name;
-          }
-          break;
-        case '2':
-          if(this.armor == "None") {
-            this.armor = item.name;
-          }
-          else {
-            this.unequipItem(slot);
-            this.armor = item.name;
-          }
-          break;
-        case '3':
-          if(this.accessory == "None") {
-            this.accessory = item.name;
-          }
-          else {
-            this.unequipItem(slot);
-            this.accessory = item.name;
-          }
-          break;
-      }
-      return
+
+    equipmentCompatabilityChecker(item, hcl){
+      //hcl is "Hero Class List"
+      const answer =  hcl.some(heroClass => 
+        heroClass.name === this.name && heroClass.canEquip.includes(item.name)
+      )
+      return answer
     }
+
+    compatibilityList(){
+      //for each hero class
+      heroClasses.forEach(element => {
+        //if their name matches the arg
+        if(element.name == this.name) {
+          //check each item in the items db
+          items.forEach(item => {
+            //if they pass the compatibility checker
+            if(this.equipmentCompatabilityChecker(item, heroClasses)){
+              console.log(`${this.name} can equip ${item.name}`)
+            }
+            else {
+              console.log(`${this.name} can't equip ${item.name}`)
+            }
+          });
+        }
+        
+      });
+    }
+
+    equipItem(slot, item){
+      if(this.equipmentCompatabilityChecker(item, heroClasses) == true){
+        //slot is a number, item is an object
+        console.log(`Slot is: ${slot}`);
+        console.log(`Item is: ${item.name}`);
+        switch (slot) {
+          case '1':
+            if(this.weapon == "None") {
+              this.attributeModifier('weapon', item);
+            }
+            else {
+              this.unequipItem(slot);
+              this.attributeModifier('weapon', item);
+            }
+            break;
+          case '2':
+            if(this.armor == "None") {
+              this.attributeModifier('armor', item);
+            }
+            else {
+              this.unequipItem(slot);
+              this.attributeModifier('armor', item);
+            }
+            break;
+          case '3':
+            if(this.accessory == "None") {
+              this.attributeModifier('accessory', item);
+            }
+            else {
+              this.unequipItem(slot);
+              this.attributeModifier('accessory', item);
+            }
+            break;
+        }
+        return
+      }
+      else {
+          console.log('it is false?')
+      }
+    }
+
     unequipItem(slot){
       //slot is provided via a prompt in the console version
       //in the UI version, make sure you supply the argument correctly
       switch (slot) {
         case '1':
           if(this.weapon !== "None") {
-            this.weapon == "None"
+            this.attributeModifier('weapon')
           }
           else {
             console.log('No weapon equipped.')
@@ -616,6 +788,8 @@ class Unit {
     // }
 
 }
+
+
 
 function createSquad(...args) {
   //This only works if the arguments provided are bestiary[x]
@@ -662,10 +836,6 @@ function createSquad(...args) {
 //-------------------------------------------------------------------------------------
 
 
-
-
-
-
 // NEW GAME SETUP FUNCTION --------------------------------------------------------------------
 function newGameSetup(){
 
@@ -674,7 +844,7 @@ function newGameSetup(){
     let gold = 50;
 
     //b: Inventory
-    let inventory = [];
+    let inventory = [items[9], items[12], items[4]];
 
     //c: The Squad. Let's start with 6.
       //Squire is at index 144 (need to update function so it uses the index of the unit)
@@ -703,10 +873,9 @@ function newGameSetup(){
 }
 //-------------------------------------------------------------------------------
 
-
 // PROMPT PLAYER FOR A CHOICE
 function askPlayerWhatsNext(playerSessionData) {
-  console.log(playerSessionData)
+  //console.log(playerSessionData)
   //a. Store player choice, as we're going to carry out our next action based on the user
   generateConsoleUI();
   let lastOptionChosen = prompt('What will you do next?');
@@ -719,8 +888,9 @@ function askPlayerWhatsNext(playerSessionData) {
       accessShop(playerSessionData);
       break;
     case '3':
-      accessQuests();
-      break;
+      accessQuests(playerSessionData);
+      console.log(gameConclusion)
+      return gameConclusion;
     case '4':
       accessRankings();
       break;
@@ -745,17 +915,13 @@ function askPlayerWhatsNext(playerSessionData) {
   }
 }
 
-
-
-
-
-
-
-
-
-
 // GAME SESSION SETUP
 function gameSession() {
+  //0. GAME SESSION CONCLUSION VARIABLE
+    //0 means it is still in session
+    //1 means the session has ended
+    let sessionConclusion = 0;
+
   //1. PLAYER DATA
     //a: Create the session object that is going to hold all of our player data, and be used to update their account when the game ends.
     let playerSessionData;
@@ -786,6 +952,7 @@ function gameSession() {
           dummyAcct.name, 
           dummyAcct.mostWavesCompleted, 
           dummyAcct.monstersDefeated, 
+          dummyAcct.questsCompleted,
           dummyAcct.itemsUnlocked, 
           dummyAcct.classesUnlocked
         )
@@ -798,9 +965,11 @@ function gameSession() {
     //Win or lose, we will have to update it, depending on how the game goes.
     console.log('PlayerData established. Starting game.')
     
-  //2. SETUP NEW GAME/RUN/ROUND
-    //a: Create default "per game" data, reset gold, default squad
+  while(sessionConclusion == 0) {
+    //2. SETUP NEW GAME/RUN/ROUND
+      //a: Create default "per game" data, reset gold, default squad
     let newGameData = newGameSetup(playerSessionData);
+
     //Then, map it onto the PlayerSession object
     playerSessionData.gold = newGameData.gold;
     playerSessionData.inventory = newGameData.inventory;
@@ -810,12 +979,24 @@ function gameSession() {
     console.table(playerSessionData);
 
   //3. NEXT STEPS
-    
-    while(conclusion == 0) {
+    let gameConclusion = 0;
+    console.log(`gameConclusion created = ${gameConclusion}`)
+    while(gameConclusion == 0) {
       //We want to prompt the player, asking what they will do next, and present them with options.
       //This will be less direct in the UI version, because the quests button will be glowing, and there will probably be a pop up with tips
-      askPlayerWhatsNext(playerSessionData);
+      gameConclusion = askPlayerWhatsNext(playerSessionData);
+      console.log(gameConclusion)
     }
+
+    //Functionality for a won/lost game should go here
+      //Prompt the player to play again. Same session, but new game.
+      let choice = prompt('Well played! Want to try again? 1 for yes.')
+      if(choice == '1'){
+        console.log('Restarting game!')
+      } else {
+        sessionConclusion = 1;
+      }
+  }
 
 
   //GAME OVER - Game ends when
@@ -824,22 +1005,8 @@ function gameSession() {
   // Quit condition - Player exits the game, or closes the browser window (consider saving data?)
   // ***Also, should the newGame() function be running as long as the game is open? 
   // Should it run, establish the game, and pass data out to the larger scope?
-  console.log('game session over')
+  console.log('Game session over.')
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //Wrapper function that ensures data is loaded before program starts---------------------
 async function startProgram() {
@@ -873,23 +1040,6 @@ async function main() {
 //---------------------------------------------------------------------------------------
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUNCTION CALLS ------------------------------------------------------------------------
 startProgram();
 //-----------------------------------------------------------------------------------------
-
-
-
-
