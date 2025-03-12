@@ -83,10 +83,10 @@
         "type": "weapon",
         "cost": 5,
         "image": "./Images/Icons/Weapons/club.png",
-        "plusHP": 0,
+        "plusHP": 10,
         "plusDmg": 3,
-        "plusAvoidance": 0,
-        "plusToHit": 0,
+        "plusAvoidance": 50,
+        "plusToHit": 30,
         "ability": "None",
         "description": "People wonder why pepper spray was named after this, those people have never been hit by both of these things."
     },
