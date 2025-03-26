@@ -173,14 +173,15 @@ let dummyAcct = {
 //GAME FUNCTIONS (that I otherwise am not sure what to group them with)
 function generateShopkeepersWares(items){
   let forSaleItemsArray = items.filter((item) => item.tier > 0);
-  console.log('New items are for sale!')
-  console.log(forSaleItemsArray);
+  //console.log('New items are for sale!')
+  //console.log(forSaleItemsArray);
   return forSaleItemsArray;
 }
 function generateBuybackTable(){
   console.log('Create a function so the player can buy-back stuff they sell.')
 }
-//let conclusion = 0;
+
+
 
 
 
@@ -304,20 +305,28 @@ function accessQuests(psd){
   console.log('Quest Menu:')
   //quest database? quest generator? maybe start with fixed quests, move to randomized ones in the future
   //quest is described, shows enemies that soldiers will face, info is limited and more is revealed as you defeat more of the enemies
+
+  //------------------------------------------------------------------VVVV
+  //NOTE: This generates a table every time you access quests, you'll want to move this to only happen once after the last quest is completed.
+  //Otherwise players could just re-load quests again and again.
   let questsAvailable = generateQuestTable(psd);
+  //------------------------------------------------------------------^^^^^
+
+
   console.log(`Quests Available:`)
   console.log(' ')
-  //GLITCH? After the accessQuests function is run once, if you run it again, the
-  //lists of questsAvailable doesn't print. The function still works, it just doesn't print.
+  console.log(`Tier: ${psd.currentWave}`)
   questsAvailable.forEach(quest => {
-    console.log(`Quest #${(questsAvailable.indexOf(quest))+1}------------------------`)
-    console.log(`${quest.name}`)
-    console.log(`${quest.flavorText}`)
-    console.log(`-------------------------------------`)
-    console.log(' ')
+      console.log(`Quest #${(questsAvailable.indexOf(quest))+1}------------------------`)
+      console.log(`${quest.name}`)
+      console.log(`${quest.flavorText}`)
+      console.log(`-------------------------------------`)
+      console.log(' ')
+    
   });
   let choiceQ = prompt(`Choose your next quest!`)
-  let nextQuest = quests[choiceQ-1];
+  let nextQuest = questsAvailable[choiceQ-1];
+  
   console.log(`You've Chosen:`);
   console.log(`${nextQuest.name}`);
   console.log(`-------------------------`);
@@ -325,12 +334,10 @@ function accessQuests(psd){
   //How will loot be generated? we have items, and i was sure to include tiers
 
   //This is where the prep ends, and the soldiers depart. Success or failure will be routed here
-  //Generic truthy value used here until I build combat/theatre
-  if(embarkOnQuest()){
-    //EVERYTHING FROM HERE DOWN ASSUMES THE QUEST IS A SUCCESS
-  //This is because there's no combat or anything yet. Consider making a success/failure button for testing.
+  if(embarkOnQuest(psd, nextQuest)){
+    
   let reward; 
-  if(choice == '1'){
+  if(choice == "1"){
     reward = nextQuest.gold
     psd.gold += reward;
     console.log(`${reward} gold was added! You now have ${psd.gold} gold!`)
@@ -353,8 +360,7 @@ function accessQuests(psd){
     console.log(`-----------------------------------`)
     console.log(`-----------------------------------`)
     //GAME OVER STATE
-    gameConclusion = 1;
-    return gameConclusion;
+    psd.openGame = false;
     //WHERE DO WE GO FROM HERE?
     //STATS SCREEN (OF YOUR SESSION?)
     //NEW GAME?
@@ -406,14 +412,101 @@ function generateQuestTable(playerSessionData){
 
 }
 
-function embarkOnQuest(){
+function embarkOnQuest(psd, qData){
   //this function will:
   //  Flavor: This is where the soldier leave town, win or lose, the smith can do nothing until they return
-  //  This initiates combat, will open the combat theatre, player will watch, there will be a results screen
+  //  Enemy squad will be generated
+  let questMobDeets = qData.enemyList.map(detail => {
+    if(typeof detail === 'string'){
+      console.log(`${detail} is a string.`)
+      let mob = mobLookup(detail, bestiary);
+      console.log(detail)
+      return mob;
+    }
+    return detail;
+  });
+  console.log(questMobDeets)
+  let questMobs = createSquad(...questMobDeets)
+  console.table(questMobs);
+  //HERE
+  //NEXT STEPS:
+  //So the enemy mob has been generated, I think we're ready to start creating COMBAT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // COMBAT TIME IS HERE-----------------------BONESAW IS READY---------------------------------
+  //  This initiates combat
+  //    Open the combat theatre, 
+  //    Player will watch, 
+  //    There will be a results screen
   //  Much of this functionality will be in other functions, but called here
   //  It will return a success or failure state, each of which will trigger different events
-  return false;
+  return combat(psd.squad, questMobs);  
 }
+
+
+function combat(squadX, squadY){
+  console.log('COMBAT START ---------------------------------------------')
+  let roundCounter = 1;
+
+  //check if either side has lost all units (and lost the battle), run combat while that isn't true
+  while((squadX.some(unit => unit.currentHp > 0)) && (squadY.some(unit => unit.currentHp > 0))) {
+    console.log(`ROUND ${roundCounter} ---------------------------------------------`)
+    roundCounter++
+
+    //squad scope attack function, it represents a whole side attacking the other
+    function attack(a, d){
+      //a is attacker
+      //d is defender
+      a.forEach(unitA => {
+
+        //check if attacking unit is dead
+        if(unitA.currentHp <= 0){
+          console.log(`${unitA.variantName} cannot attack, it has been slain!`)
+        }
+
+        //if not, carry on
+        else {
+
+          //find next target
+          let nextD = d.find(unit => unit.currentHp > 0);
+
+          //if one exists, hit em
+          if(nextD !== undefined) {
+            nextD.currentHp -= unitA.totalDmg
+            console.log(`${unitA.vairantName} hit ${nextD.name} for ${unitA.totalDmg}. HP left: ${nextD.currentHp}!`)
+    
+            //if that kiled em, report it
+            if(nextD.currentHp <= 0){
+              console.log(`${nextD.name} has died!`)
+            }
+          }
+          //if not, you win!
+          else {
+            console.log('Nothing to attack. SquadX wins.')
+          }
+        }
+        
+      });
+    }
+
+    //player units attack first
+    attack(squadX, squadY)
+
+    //if some enemies remain, they get to attack back
+    if(squadY.some(unit => unit.currentHp > 0)){
+      attack(squadY, squadX)
+    }
+  }
+
+  if(squadX.some(unit => unit.currentHp > 0) == false) {
+    console.log('Squad has been wiped out! Future versions will have ability to use remaining gold at this point...')
+    return false;
+
+  } else {
+    console.log(`Squad is victorious!`)
+    return true;
+  }
+  
+}
+
 
 function accessRankings(){
   console.log('Rankings Menu:')
@@ -527,17 +620,7 @@ function accessSquad(psd){
       break;
     case '3':
       sqd.forEach(member => {
-        console.log(`${member.displayMessage()}`)
-        console.log('--------------------------------')
-        console.log('--------------------------------')
-        console.log('--------------------------------')
-        console.log('--------------------------------')
-
-      });
-      break;
-    case '4':
-      sqd.forEach(member => {
-        console.log(`${member.compatibilityList()}`)
+        console.log(`${member.displayStats()}`)
         console.log('--------------------------------')
         console.log('--------------------------------')
         console.log('--------------------------------')
@@ -570,8 +653,10 @@ function displayMessage(messageName) {
 //This will also be what creates enemy groups for quests
 class Unit {
     constructor(createdUnit){
-
+      console.log(createdUnit)
         this.name = createdUnit["name"], 
+        //PROBLEM IS HERE BOOKMARK
+        this.variantName = createdUnit["variantNames"][Math.floor(Math.random() * createdUnit["variantNames"].length)],
         this.goldReward = createdUnit["goldReward"], 
         this.image = createdUnit["image"], 
 
@@ -799,9 +884,9 @@ function createSquad(...args) {
   let i = 0;
 
   while (i < args.length) {
-      // let newUnit = args[i];
+      
       let unitData = args[i];
-
+      //console.log(unitData)
       // Check if the argument is a string (indicating a unit type)
       if (typeof unitData.name === 'string') {
           const nextArg = args[i + 1];
@@ -824,6 +909,14 @@ function createSquad(...args) {
   }
   
   return squad;
+}
+function mobLookup(mobName, bst){
+  console.log(mobName);
+  console.log(bst)
+  //This function will take strings and find the corresponding unit in the bestiary
+  return bst.find(mobEntry => {
+    return mobEntry.name === mobName;
+  }) || false;
 }
 //-------------------------------------------------------------------------------------
 
@@ -848,15 +941,18 @@ function newGameSetup(){
 
     //c: The Squad. Let's start with 6.
       //Squire is at index 144 (need to update function so it uses the index of the unit)
-    let squad = createSquad(bestiary[144], 6);
+    let squad = createSquad(bestiary[144], 4);
     
     //d: Wave
     let currentWave = 1;
 
     //e: Starting shopkeeper's wares
     let forSaleList = generateShopkeepersWares(items);
-    console.log("For Sale List: ")
-    console.log(forSaleList)
+    //console.log("For Sale List: ")
+    //console.log(forSaleList)
+
+    //f: Game is running status
+    let openGame = true;
     
   //2. Generate the UI (Game UI.txt)
     //In the console version, this will be a list with prompts to move in and out of the menus, like an old pc game or dos application
@@ -868,7 +964,7 @@ function newGameSetup(){
       //Options Menu (007 Options Menu.txt)
     //let playerChoice = askPlayerWhatsNext(user);
 
-    return {gold, inventory, squad, currentWave, forSaleList}
+    return {gold, inventory, squad, currentWave, forSaleList, openGame}
 
 }
 //-------------------------------------------------------------------------------
@@ -882,15 +978,13 @@ function askPlayerWhatsNext(playerSessionData) {
   switch (lastOptionChosen) {
     case '1':
       seePlayerStatus(playerSessionData);
-      return lastOptionChosen;
-      //break;
+      break;
     case '2':
       accessShop(playerSessionData);
       break;
     case '3':
       accessQuests(playerSessionData);
-      console.log(gameConclusion)
-      return gameConclusion;
+      break;
     case '4':
       accessRankings();
       break;
@@ -976,16 +1070,14 @@ function gameSession() {
     playerSessionData.squad = newGameData.squad;
     playerSessionData.currentWave = newGameData.currentWave;
     playerSessionData.forSaleList = newGameData.forSaleList;
-    console.table(playerSessionData);
+    playerSessionData.openGame = newGameData.openGame;
+    //console.table(playerSessionData);
 
   //3. NEXT STEPS
-    let gameConclusion = 0;
-    console.log(`gameConclusion created = ${gameConclusion}`)
-    while(gameConclusion == 0) {
+    while(playerSessionData.openGame == true) {
       //We want to prompt the player, asking what they will do next, and present them with options.
       //This will be less direct in the UI version, because the quests button will be glowing, and there will probably be a pop up with tips
-      gameConclusion = askPlayerWhatsNext(playerSessionData);
-      console.log(gameConclusion)
+      askPlayerWhatsNext(playerSessionData);
     }
 
     //Functionality for a won/lost game should go here
