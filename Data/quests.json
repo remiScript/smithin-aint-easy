@@ -1,0 +1,49 @@
+[
+    {
+        "tier": 1,
+        "name": "Goblin Encampment",
+        "flavorText": "Goblins have set camp near the outskirts of town. We'll need to strike first before they do.",
+        "gold": 1000,
+        "loot": 1,
+        "enemyList": ["Goblin", 3, "Goblin Swordfighter", 1]
+    },
+    {
+        "tier": 1,
+        "name": "Danger Dogs",
+        "flavorText": "Wolves are attacking. Attack em back, yo.",
+        "gold": 1000,
+        "loot": 1,
+        "enemyList": ["Goblin", 3, "Goblin Swordfighter", 1]
+    },
+    {
+        "tier": 2,
+        "name": "More goblins!",
+        "flavorText": "Goblins have set camp near the outskirts of town. We'll need to strike first before they do.",
+        "gold": 1000,
+        "loot": 1,
+        "enemyList": ["Goblin", 3, "Goblin Swordfighter", 1]
+    },    {
+        "tier": 2,
+        "name": "Flame Bandits",
+        "flavorText": "Goblins have set camp near the outskirts of town. We'll need to strike first before they do.",
+        "gold": 1000,
+        "loot": 1,
+        "enemyList": ["Goblin", 3, "Goblin Swordfighter", 1]
+    },
+    {
+        "tier": 3,
+        "name": "Dire Wolf Doom!",
+        "flavorText": "Wolves are attacking. Attack em back, yo.",
+        "gold": 1000,
+        "loot": 1,
+        "enemyList": ["Goblin", 3, "Goblin Swordfighter", 1]
+    },
+    {
+        "tier": 3,
+        "name": "Grand Invasion",
+        "flavorText": "Goblins have set camp near the outskirts of town. We'll need to strike first before they do.",
+        "gold": 1000,
+        "loot": 1,
+        "enemyList": ["Goblin", 3, "Goblin Swordfighter", 1]
+    }
+]

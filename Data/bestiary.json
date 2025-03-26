@@ -1317,7 +1317,7 @@
       "goldReward": 1,
       "image": "",
       "rawHP": 5,
-      "rawDmg": 5,
+      "rawDmg": 1,
       "rawAvoidance": 35,
       "rawToHit": 85,
       "defaultWeapon": "None",
@@ -1327,7 +1327,14 @@
       "recruitable": false,
       "heroClass": false,
       "ability": "None",
-      "description": "Description"
+      "description": "Description",
+      "variantNames": [
+        "Goldtoof Grizzik", "Silkcoat Snaggle", "Big Bligg", "Vrik the Slick", "Snark Dapperfang",
+        "Gizzbit the Gilded", "Diamond Drog", "Zibz the Smooth", "Kragg Velvetfang", "Mogwump Royale",
+        "Rizzik the Ritzy", "Tragg Lux", "Skrimp Shinytooth", "Nix the Glitz", "Fizzle Fontaine",
+        "Blunk the Baron", "Skab Goldclaw", "Gribble Stacks", "Twitch Minkmantle", "Drizz the Dazzler",
+        "Slag Silkstride", "Munk the Magnate", "Zog Cufflinks", "Brikk Bankroll", "Frizz Furcoat"
+      ]    
     },
     {
       "index": 70,
@@ -2742,7 +2749,7 @@
       "goldReward": 1,
       "image": "",
       "rawHP": 5,
-      "rawDmg": 5,
+      "rawDmg": 2,
       "rawAvoidance": 35,
       "rawToHit": 85,
       "defaultWeapon": "None",
@@ -2752,7 +2759,14 @@
       "recruitable": true,
       "heroClass": true,
       "ability": "None",
-      "description": "Every Journey Starts Somewhere."
+      "description": "Every Journey Starts Somewhere.",
+      "variantNames": [
+        "Oswald Truegrit", "Reginald Shortstride", "Gilbert Ironson", "Edwin Mudford", "Percival Ashenford",
+        "Hugo Brighthand", "Cedric Fairweather", "Ludwig Tumblebrook", "Bertram Strongfellow", "Randolph Oathkeeper",
+        "Alfred Merriway", "Basil Lightrun", "Wilfred Thornbrook", "Egbert Crookshank", "Giles Stormborne",
+        "Humphrey Redshield", "Theobald Evenfall", "Walter Bramblethorn", "Simon Wexley", "Oswin Gallowsend",
+        "Geoffrey Oakenshoe", "Arnold Quickspur", "Hubert Bindswell", "Nigel Thistlebrand", "Rowan Brightlance"
+    ]    
     },
     {
       "index": 145,
