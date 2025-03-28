@@ -438,75 +438,106 @@ function embarkOnQuest(psd, qData){
   //    There will be a results screen
   //  Much of this functionality will be in other functions, but called here
   //  It will return a success or failure state, each of which will trigger different events
-  return combat(psd.squad, questMobs);  
+  let battle = new Combat(psd.squad, questMobs);
+  return battle.startCombat();
 }
 
+class Combat {
+  constructor(player, mobs) {
+    this.playerSquad = player;
+    this.mobs = mobs;
+    this.currentAttackers = player;
+    this.currentDefenders = mobs;
+  }
 
-function combat(squadX, squadY){
-  console.log('COMBAT START ---------------------------------------------')
-  let roundCounter = 1;
+  startCombat() {
+    let roundCounter = 1;
+    while (this.currentAttackers.some(unit => unit.currentHp > 0) && this.currentDefenders.some(unit => unit.currentHp > 0)) {
+      roundCounter++
+      if(roundCounter >= 20){
+        console.log('Too many rounds')
+        return;
+      }
+      console.log(`\n--- Round #${roundCounter} ---`);
+      this.executeRound();
+      this.swapTurns();
+    }
+    let victors = this.getVictoriousTeam();
+    console.log(`Combat is over! ${victors} are victorious!`);
 
-  //check if either side has lost all units (and lost the battle), run combat while that isn't true
-  while((squadX.some(unit => unit.currentHp > 0)) && (squadY.some(unit => unit.currentHp > 0))) {
-    console.log(`ROUND ${roundCounter} ---------------------------------------------`)
-    roundCounter++
-
-    //squad scope attack function, it represents a whole side attacking the other
-    function attack(a, d){
-      //a is attacker
-      //d is defender
-      a.forEach(unitA => {
-
-        //check if attacking unit is dead
-        if(unitA.currentHp <= 0){
-          console.log(`${unitA.variantName} cannot attack, it has been slain!`)
-        }
-
-        //if not, carry on
-        else {
-
-          //find next target
-          let nextD = d.find(unit => unit.currentHp > 0);
-
-          //if one exists, hit em
-          if(nextD !== undefined) {
-            nextD.currentHp -= unitA.totalDmg
-            console.log(`${unitA.vairantName} hit ${nextD.name} for ${unitA.totalDmg}. HP left: ${nextD.currentHp}!`)
-    
-            //if that kiled em, report it
-            if(nextD.currentHp <= 0){
-              console.log(`${nextD.name} has died!`)
-            }
-          }
-          //if not, you win!
-          else {
-            console.log('Nothing to attack. SquadX wins.')
-          }
-        }
-        
-      });
+    //NEXT TIME: LETS SIFT THIS OUT INTO ITS OWN FUNCTIONALITY 
+    if(victors == "Player"){
+      return true;
+    } else if(victors == "Mobs"){
+      return false;
+    } else {
+      console.log("It's a draw! Wait.... what?")
     }
 
-    //player units attack first
-    attack(squadX, squadY)
+  }
 
-    //if some enemies remain, they get to attack back
-    if(squadY.some(unit => unit.currentHp > 0)){
-      attack(squadY, squadX)
+  executeRound() {
+    this.currentAttackers.forEach(unit => this.attack(unit))
+  }
+
+  attack(a) {
+    if(a.currentHp <= 0){
+      console.log(`${a.variantName} cannot attack, it has been slain!`);
+      return;
+    }
+
+    let target = this.getNextTarget();
+    if (!target) {
+      console.log(`Nothing to attack. ${a.variantName} and their forces win!`)
+      return;
+    }
+
+    if(!this.rollHit(a)) {
+      //check for a miss
+      console.log(`${a.variantName} missed!`)
+      return;
+    }
+
+    if(this.rollDodge(target)){
+      console.log(`${a.variantName}'s attack was dodged!`);
+      return;
+    }
+
+    this.applyDamage(a,target)
+  }
+
+  getNextTarget() {
+    return this.currentDefenders.find(unit => unit.currentHp > 0);
+  }
+  rollHit(a){
+    //if true = hit
+    //if false = miss
+    return a.score() <= a.totalToHit;
+  }
+  rollDodge(d) {
+    //if true = dodge successful
+    //if false = failed to dodge
+    return d.score() < d.totalAvoidance
+  }
+
+  applyDamage(a, d){
+    d.currentHp -= a.totalDmg;
+    console.log(`${a.variantName} hit ${d.variantName} for ${a.totalDmg}. HP left: ${d.currentHp}!`);
+
+    if (d.currentHp <= 0) {
+      console.log(`${d.variantName} has died!`);
     }
   }
 
-  if(squadX.some(unit => unit.currentHp > 0) == false) {
-    console.log('Squad has been wiped out! Future versions will have ability to use remaining gold at this point...')
-    return false;
-
-  } else {
-    console.log(`Squad is victorious!`)
-    return true;
+  swapTurns() {
+    [this.currentAttackers, this.currentDefenders] = [this.currentDefenders, this.currentAttackers];
   }
-  
-}
 
+  getVictoriousTeam() {
+    return this.playerSquad.some(unit => unit.currentHp > 0) ? 'Player' : 'Mobs' 
+  }
+
+}
 
 function accessRankings(){
   console.log('Rankings Menu:')
@@ -656,7 +687,7 @@ class Unit {
       console.log(createdUnit)
         this.name = createdUnit["name"], 
         //PROBLEM IS HERE BOOKMARK
-        this.variantName = createdUnit["variantNames"][Math.floor(Math.random() * createdUnit["variantNames"].length)],
+        this.variantName = this.randomizer(createdUnit.variantNames),
         this.goldReward = createdUnit["goldReward"], 
         this.image = createdUnit["image"], 
 
@@ -708,6 +739,16 @@ class Unit {
 
     get calcTotalToHit(){
         return this.toHit + this.bonusToHitFromWeapon + this.bonusToHitFromArmor + this.bonusToHitFromAccessory + this.bonusToHitFromEffect;
+    }
+
+    randomizer(arr){
+      console.log(arr)
+      let variantIndex = Math.floor(Math.random()*arr.length);
+      return arr[variantIndex]
+    }
+
+    score(){
+      return Math.floor((Math.random()*100));
     }
 
     attributeModifier(slot, item){
@@ -941,7 +982,7 @@ function newGameSetup(){
 
     //c: The Squad. Let's start with 6.
       //Squire is at index 144 (need to update function so it uses the index of the unit)
-    let squad = createSquad(bestiary[144], 4);
+    let squad = createSquad(bestiary[144], 6);
     
     //d: Wave
     let currentWave = 1;
